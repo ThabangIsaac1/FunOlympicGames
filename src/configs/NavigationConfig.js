@@ -4,7 +4,7 @@ import {
 import { APP_PREFIX_PATH } from 'configs/AppConfig'
 
 
-const dashBoardNavTree = [{
+const superAdminNavTree = [{
   key: 'dashboards',
   path: `${APP_PREFIX_PATH}/home`,
   title: 'SuperAdmin',
@@ -29,8 +29,35 @@ const dashBoardNavTree = [{
     }
   ]
 }]
+
+const adminAdminNavTree = [{
+  key: 'dashboards',
+  path: `${APP_PREFIX_PATH}/home`,
+  title: 'Admin',
+  icon: DashboardOutlined,
+  breadcrumb: false,
+  submenu: [
+    {
+      key: 'dashboard',
+      path: `${APP_PREFIX_PATH}/home`,
+      title: 'Dashboard',
+      icon: DashboardOutlined,
+      breadcrumb: false,
+      submenu: []
+    },
+    {
+      key: 'add-admins',
+      path: `${APP_PREFIX_PATH}/add-admins`,
+      title: 'Add Admins',
+      icon: UsergroupAddOutlined,
+      breadcrumb: false,
+      submenu: []
+    }
+  ]
+}]
 const navigationConfig = [
-  ...dashBoardNavTree
+  ...superAdminNavTree,
+  ...adminAdminNavTree
 ]
 
 export default navigationConfig;
