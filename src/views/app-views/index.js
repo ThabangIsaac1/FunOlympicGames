@@ -1,14 +1,29 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense,useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Loading from 'components/shared-components/Loading';
 import { APP_PREFIX_PATH } from 'configs/AppConfig'
+import { UserContext } from '../../provider/UserProvider'
+
 
 export const AppViews = () => {
+  const { currentUser, userDetails } = useContext(UserContext)
+
   return (
     <Suspense fallback={<Loading cover="content"/>}>
       <Switch>
-        <Route path={`${APP_PREFIX_PATH}/superadmins`} component={lazy(() => import(`./super-admins`))} />
-        <Route path={`${APP_PREFIX_PATH}/add-admins`} component={lazy(() => import(`./super-admins/add-admins`))} />
+
+      {!!currentUser ? (
+          <Route
+            path={`${APP_PREFIX_PATH}/`}
+            component={lazy(() => import(`./super-admins`))}
+            exact
+          />
+        ) : (
+          <Redirect to="/auth/login" />
+        )}
+
+      
+        <Route path={`${APP_PREFIX_PATH}/add-admins`} component={lazy(() => import(`./super-admins/user-management`))} />
 
          <Redirect from={`${APP_PREFIX_PATH}`} to={`${APP_PREFIX_PATH}/superadmins`} />
       </Switch>
