@@ -6,14 +6,14 @@ import { APP_PREFIX_PATH } from 'configs/AppConfig'
 
 const superAdminNavTree = [{
   key: 'super',
-  path: `${APP_PREFIX_PATH}/home`,
+  path: `${APP_PREFIX_PATH}/`,
   title: 'SuperAdmin',
   icon: DashboardOutlined,
   breadcrumb: false,
   submenu: [
     {
       key: 'dashboard',
-      path: `${APP_PREFIX_PATH}/home`,
+      path: `${APP_PREFIX_PATH}/`,
       title: 'Dashboard',
       icon: DashboardOutlined,
       breadcrumb: false,

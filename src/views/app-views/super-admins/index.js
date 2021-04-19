@@ -13,7 +13,7 @@ import {
   EllipsisOutlined
 } from '@ant-design/icons';
 import { 
-  regionData, 
+  
   sessionData, 
   sessionLabels, 
   conbinedSessionData,
@@ -44,6 +44,41 @@ export const AnalyticDashboard = () => {
     </Dropdown>
   )
         
+
+    
+
+   const regionData = [
+    {
+      color: '#3e82f7',
+      name: 'United States of America',
+      value: '37.61%'
+      },
+      {
+      color: '#04d182',
+      name: 'Brazil',
+      value: '16.79%'
+      },
+      {
+      color: '#ffc542',
+      name: 'India',
+      value: '12.42%'
+     },
+      {
+      color: '#fa8c16',
+      name: 'China',
+      value: '9.85%'
+    },
+    {
+      color: '#ff6b72',
+      name: 'Malaysia',
+      value: '7.68%'
+    },
+    {
+      color: '#a461d8',
+      name: 'Thailand',
+      value: '5.11%'
+    }
+  ]
 
   const columns = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
