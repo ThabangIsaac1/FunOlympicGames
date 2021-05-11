@@ -150,6 +150,74 @@ app.get('/api/retrieve-claim/:email', (req, res) => {
 
 
 
+// Post an Event
+app.post('/api/events', (req, res) => {
+  (async () => {
+    try {
+      db.collection('Events').add({
+        codeName: req.body.codeName,
+        countriesParticipating: req.body.countriesParticipating,
+        dateScheduled: req.body.dateScheduled,
+        category:req.body.category,
+        eventLocation: req.body.eventLocation,
+        virtualLink: req.body.virtualLink,
+        eventDescription: req.body.eventDescription,
+      })
+      return res.status(202).json({ res: 'success' })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ res: 'fail' })
+    }
+  })()
+})
+
+// Getting all Events
+app.get('/api/events', (req, res) => {
+  (async () => {
+    try {
+      let query = db.collection('Events')
+      let response = []
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          const selectedItem = {
+            id: doc.id,
+            ...doc.data(),
+            
+          }
+          response.push(selectedItem)
+        }
+      })
+      return res.status(200).send(response)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
+
+// Getting a Specific Event
+app.get('/api/events/:id', (req, res) => {
+  ;(async () => {
+    try {
+      let id = req.params.id
+      let query = db.collection('Events').doc(id)
+      let response = {}
+      await query.get().then((querySnapshot) => {
+        let doc = querySnapshot
+        const selectedItem = {
+          id: doc.id,
+          ...doc.data(),
+        }
+        response = selectedItem
+      })
+      return res.status(200).send(response)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
 
 
 

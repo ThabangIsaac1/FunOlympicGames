@@ -5,9 +5,9 @@ import {
   Col,
   Card,
   Form,
-  Select,Button
+  Select,Button, message
 } from "antd";
-
+import axios from 'axios'
 
 
 const GeneralField = (props) => {
@@ -76,21 +76,30 @@ const GeneralField = (props) => {
   };
   
   
+
+
+
   const [data, setData] = useState({
-    sporting_code:'',
+    codeName:'',
     category:'',
-    location:'',
-    date_scheduled:'',
-    countries_participating:'',
-    location:'',
-    link:'',
-    description:''
+    eventLocation:'',
+    dateScheduled:'',
+    countriesParticipating:'',
+    virtualLink:'',
+    eventDescription:''
    })
   
   const handle = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
     console.log(data)
   };
+
+ const Submit = ()=>{
+
+  axios.post(`http://localhost:5000/funolympic-fnqi/us-central1/app/api/events`,data).then(()=>{
+    message.success('Event has been successfully added')
+  })
+ }
 
 
   return (
@@ -104,7 +113,7 @@ const GeneralField = (props) => {
 
           <Col xs={24} sm={24} md={12}>
             <Form.Item name="sporting_code" label="Sporting Code Name" rules={rules.code}>
-              <Input  name="sporting_code" className="w-100"     value={data.sporting_code} placeholder="Example - Tennis"
+              <Input  name="codeName" className="w-100"     value={data.codeName} placeholder="Example - Tennis"
                 onChange={handle}/>
             </Form.Item>
           </Col>
@@ -116,7 +125,7 @@ const GeneralField = (props) => {
           </Col>
           <Col xs={24} sm={24} md={12}>
             <Form.Item name="countries_participating" label="Countries Participating" rules={rules.countries}>
-              <Input  name="countries_participating" value={data.countries_participating}
+              <Input  name="countriesParticipating" value={data.countriesParticipating}
                 onChange={handle}  placeholder="Example - Botswana, Zimbabwe, Malawi"/>
             </Form.Item>
           </Col>
@@ -124,9 +133,9 @@ const GeneralField = (props) => {
             <Form.Item  label="Date Scheduled" rules={rules.date}>
             <Input
                             type="date"
-                            name="date_scheduled"
+                            name="dateScheduled"
                             onChange={handle}
-                            value={data.date_scheduled}
+                            value={data.dateScheduled}
                             className="w-100"
                           />
             </Form.Item>
@@ -134,20 +143,20 @@ const GeneralField = (props) => {
 
           <Col xs={24} sm={24} md={12}>
             <Form.Item name="location" label="Event Location" rules={rules.locations}>
-              <Input  name="location" value={data.location}
+              <Input  name="eventLocation" value={data.eventLocation}
                 onChange={handle}  placeholder="Example - Great Mansion Grounds"/>
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={12}>
             <Form.Item name="link" label="Virtual Link" rules={rules.virtual}>
-              <Input  name="link" value={data.link}
+              <Input  name="virtulaLink" value={data.eventLink}
                 onChange={handle}  placeholder="Livestream - Google Link"/>
             </Form.Item>
           </Col>
 
           <Col xs={24} sm={24} md={24}>
             <Form.Item name="description" label="Event Description" rules={rules.event_description}>
-              <Input.TextArea  name="description" value={data.description}
+              <Input.TextArea  name="eventDescription" value={data.eventDescription}
                 onChange={handle}  placeholder="Short brief description"/>
             </Form.Item>
           </Col>
@@ -160,9 +169,9 @@ const GeneralField = (props) => {
           width: "calc(10% - 5px)",
           margin: -10,
         }}
-        onClick={null}
+        onClick={Submit}
         type="primary"
-        htmlType="submit"
+        htmlType="Submit"
       >
         Submit
       </Button>
