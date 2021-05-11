@@ -1,5 +1,5 @@
 import { 
-  DashboardOutlined,UsergroupAddOutlined 
+  DashboardOutlined,UsergroupAddOutlined,CalendarOutlined  
 } from '@ant-design/icons';
 import { APP_PREFIX_PATH } from 'configs/AppConfig'
 
@@ -46,10 +46,10 @@ const adminAdminNavTree = [{
       submenu: []
     },
     {
-      key: 'add-admins',
-      path: `${APP_PREFIX_PATH}/add-admins`,
-      title: 'Add Admins',
-      icon: UsergroupAddOutlined,
+      key: 'Event',
+      path: `${APP_PREFIX_PATH}/add-event`,
+      title: 'Sporting Code',
+      icon: CalendarOutlined ,
       breadcrumb: false,
       submenu: []
     }
