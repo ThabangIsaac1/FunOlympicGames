@@ -55,9 +55,36 @@ const adminAdminNavTree = [{
     }
   ]
 }]
+
+const subscriberNavTree = [{
+  key: 'subscriber',
+  path: `${APP_PREFIX_PATH}/subscribers`,
+  title: 'Subscriber',
+  icon: DashboardOutlined,
+  breadcrumb: false,
+  submenu: [
+    {
+      key: 'subscriber',
+      path: `${APP_PREFIX_PATH}/subscribers`,
+      title: 'Dashboard',
+      icon: DashboardOutlined,
+      breadcrumb: false,
+      submenu: []
+    },
+    {
+      key: 'Event',
+      path: `${APP_PREFIX_PATH}/add-event`,
+      title: 'Sporting Code',
+      icon: CalendarOutlined ,
+      breadcrumb: false,
+      submenu: []
+    }
+  ]
+}]
 const navigationConfig = [
   ...superAdminNavTree,
-  ...adminAdminNavTree
+  ...adminAdminNavTree,
+  ...subscriberNavTree
 ]
 
 export default navigationConfig;
