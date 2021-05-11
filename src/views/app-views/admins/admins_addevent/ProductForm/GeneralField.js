@@ -8,6 +8,7 @@ import {
   Select,Button, message
 } from "antd";
 import axios from 'axios'
+import { set } from "lodash";
 
 
 const GeneralField = (props) => {
@@ -96,8 +97,17 @@ const GeneralField = (props) => {
 
  const Submit = ()=>{
 
-  axios.post(`http://localhost:5000/funolympic-fnqi/us-central1/app/api/events`,data).then(()=>{
+  axios.post(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`,data).then(()=>{
     message.success('Event has been successfully added')
+    setData({
+      codeName:'',
+      category:'',
+      eventLocation:'',
+      dateScheduled:'',
+      countriesParticipating:'',
+      virtualLink:'',
+      eventDescription:''
+     })
   })
  }
 
@@ -149,7 +159,7 @@ const GeneralField = (props) => {
           </Col>
           <Col xs={24} sm={24} md={12}>
             <Form.Item name="link" label="Virtual Link" rules={rules.virtual}>
-              <Input  name="virtulaLink" value={data.eventLink}
+              <Input  name="virtulLink" value={data.eventLink}
                 onChange={handle}  placeholder="Livestream - Google Link"/>
             </Form.Item>
           </Col>
