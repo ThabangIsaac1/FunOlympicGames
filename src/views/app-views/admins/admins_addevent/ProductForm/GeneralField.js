@@ -17,13 +17,13 @@ const GeneralField = (props) => {
   const { Option } = Select;
 
   const rules = {
-    name: [
+  codeName: [
       {
         required: true,
         message: "Please enter product name",
       },
     ],
-    description: [
+    eventDescription: [
       {
         required: true,
         message: "Please enter product description",
@@ -41,33 +41,33 @@ const GeneralField = (props) => {
         message: "Please enter a category",
       },
     ],
-    date: [
+    dateScheduled: [
       {
         required: true,
         message: "Please  enter the date of event",
       },
     ],
-    countries: [
+    countriesParticipating: [
       {
         required: true,
         message: "Please enter the countries participating",
       },
     ],
-    locations: [
+    eventLocation: [
       {
         required: true,
         message: "Please enter the event location",
       },
       
     ],
-    virtual: [
+    virtualLink: [
       {
         required: true,
         message: "Please enter the event link",
       },
       
     ],
-    event_description: [
+    eventDescription: [
       {
         required: true,
         message: "Please enter the event description",
@@ -97,7 +97,7 @@ const GeneralField = (props) => {
 
  const Submit = ()=>{
 
-  axios.post(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`,data).then(()=>{
+  axios.post(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`,data,).then(()=>{
     message.success('Event has been successfully added')
     setData({
       codeName:'',
@@ -159,7 +159,7 @@ const GeneralField = (props) => {
           </Col>
           <Col xs={24} sm={24} md={12}>
             <Form.Item name="link" label="Virtual Link" rules={rules.virtual}>
-              <Input  name="virtulLink" value={data.eventLink}
+              <Input  name="virtulLink" value={data.virtualtLink}
                 onChange={handle}  placeholder="Livestream - Google Link"/>
             </Form.Item>
           </Col>
