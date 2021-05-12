@@ -72,9 +72,9 @@ const subscriberNavTree = [{
       submenu: []
     },
     {
-      key: 'Event',
-      path: `${APP_PREFIX_PATH}/add-event`,
-      title: 'Sporting Code',
+      key: 'watch',
+      path: `${APP_PREFIX_PATH}/stream-event`,
+      title: 'Stream Event',
       icon: CalendarOutlined ,
       breadcrumb: false,
       submenu: []
