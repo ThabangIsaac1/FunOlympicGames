@@ -43,6 +43,7 @@ const paymentStatusList = ['Paid', 'Pending', 'Expired']
 const Orders = () => {
 
 	const [list, setList] = useState([])
+	const [eventsData, setEvents] = useState([])
 	const [selectedRows, setSelectedRows] = useState([])
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
@@ -60,8 +61,9 @@ const Orders = () => {
 
 		axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`).
 		then((res) => {
-			console.log(res.data)
+			// console.log(res.data)
 			setList(res.data)
+			setEvents(res.data)
 		})
 
 
@@ -149,7 +151,7 @@ const Orders = () => {
 
 	const onSearch = e => {
 		const value = e.currentTarget.value
-		const searchArray = e.currentTarget.value ? list : OrderListData
+		const searchArray = e.currentTarget.value ? list : eventsData
 		const data = utils.wildCardSearch(searchArray, value)
 		setList(data)
 		setSelectedRowKeys([])
@@ -163,18 +165,7 @@ const Orders = () => {
 					<div className="mr-md-3 mb-3">
 						<Input placeholder="Search" prefix={<SearchOutlined />} onChange={e => onSearch(e)} />
 					</div>
-					<div className="mb-3">
-						<Select
-							defaultValue="All"
-							className="w-100"
-							style={{ minWidth: 180 }}
-							onChange={handleShowStatus}
-							placeholder="Status"
-						>
-							<Option value="All">All payment </Option>
-							{paymentStatusList.map(elm => <Option key={elm} value={elm}>{elm}</Option>)}
-						</Select>
-					</div>
+					
 				</Flex>
 
 			</Flex>
