@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, {useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, Table, Select, Input, Button, Badge, Menu, Tag } from 'antd';
 import OrderListData from "assets/data/order-list.data.json"
 import { EyeOutlined, FileExcelOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
@@ -7,30 +7,32 @@ import AvatarStatus from 'components/shared-components/AvatarStatus';
 import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
 import Flex from 'components/shared-components/Flex'
 import NumberFormat from 'react-number-format';
-import moment from 'moment'; 
+import moment from 'moment';
 import { DATE_FORMAT_DD_MM_YYYY } from 'constants/DateConstant'
 import utils from 'utils'
+import axios from 'axios'
+
 
 const { Option } = Select
 
 const getPaymentStatus = status => {
-	if(status === 'Paid') {
+	if (status === 'Paid') {
 		return 'success'
 	}
-	if(status === 'Pending') {
+	if (status === 'Pending') {
 		return 'warning'
 	}
-	if(status === 'Expired') {
+	if (status === 'Expired') {
 		return 'error'
 	}
 	return ''
 }
 
 const getShippingStatus = status => {
-	if(status === 'Ready') {
+	if (status === 'Ready') {
 		return 'blue'
 	}
-	if(status === 'Shipped') {
+	if (status === 'Shipped') {
 		return 'cyan'
 	}
 	return ''
@@ -40,12 +42,12 @@ const paymentStatusList = ['Paid', 'Pending', 'Expired']
 
 const Orders = () => {
 
-	const [list, setList] = useState(OrderListData)
+	const [list, setList] = useState([])
 	const [selectedRows, setSelectedRows] = useState([])
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
 	const handleShowStatus = value => {
-		if(value !== 'All') {
+		if (value !== 'All') {
 			const key = 'paymentStatus'
 			const data = utils.filterArray(OrderListData, key, value)
 			setList(data)
@@ -53,7 +55,17 @@ const Orders = () => {
 			setList(OrderListData)
 		}
 	}
+	useEffect(() => {
 
+
+		axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`).
+		then((res) => {
+			console.log(res.data)
+			setList(res.data)
+		})
+
+
+	}, [])
 	const dropdownMenu = row => (
 		<Menu>
 			<Menu.Item>
@@ -70,72 +82,64 @@ const Orders = () => {
 			</Menu.Item>
 		</Menu>
 	);
-
+// render: (_, record) => (
+// 				<div className="d-flex">
+// 					{/* <AvatarStatus size={30} src={record.image} name={record.name}/> */}
+// 				</div>
+// 			),
 	const tableColumns = [
 		{
-			title: 'ID',
-			dataIndex: 'id'
-		},
-		{
-			title: 'Product',
-			dataIndex: 'name',
-			render: (_, record) => (
-				<div className="d-flex">
-					<AvatarStatus size={30} src={record.image} name={record.name}/>
-				</div>
-			),
+			title: 'Event',
+			dataIndex: 'codeName',
+			// render: (_, record) => (
+			// 	<div className="d-flex">
+			// 		<AvatarStatus size={30} src={record.image} name={record.name}/>
+			// 	</div>
+			// ),
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
 		},
 		{
 			title: 'Date',
-			dataIndex: 'date',
-			render: (_, record) => (
-				<span>{moment.unix(record.date).format(DATE_FORMAT_DD_MM_YYYY)}</span>
-			),
+			dataIndex: 'dateScheduled',
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'date')
 		},
 		{
-			title: 'Order status',
-			dataIndex: 'orderStatus',
-			render: (_, record) => (
-				<><Tag color={getShippingStatus(record.orderStatus)}>{record.orderStatus}</Tag></>
-			),
-			sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
+			title: 'Location',
+			dataIndex: 'eventLocation',
+			
+			// sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
+		},
+
+		{
+			title: 'Countries Participating',
+			dataIndex: 'countriesParticipating',
+			
+			// sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
 		},
 		{
-			title: 'Payment status',
-			dataIndex: 'paymentStatus',
-			render: (_, record) => (
-				<><Badge status={getPaymentStatus(record.paymentStatus)} /><span>{record.paymentStatus}</span></>
-			),
+			title: 'Status',
+			dataIndex: 'status',
+			// render: (_, record) => (
+			// 	<><Badge status={getPaymentStatus(record.paymentStatus)} /><span>{record.paymentStatus}</span></>
+			// ),
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'paymentStatus')
 		},
-		{
-			title: 'Total',
-			dataIndex: 'amount',
-			render: (_, record) => (
-				<span className="font-weight-semibold">
-					<NumberFormat
-						displayType={'text'} 
-						value={(Math.round(record.amount * 100) / 100).toFixed(2)} 
-						prefix={'$'} 
-						thousandSeparator={true} 
-					/>
-				</span>
-			),
-			sorter: (a, b) => utils.antdTableSorter(a, b, 'amount')
-		},
+		
 		{
 			title: '',
 			dataIndex: 'actions',
 			render: (_, elm) => (
 				<div className="text-right">
-					<EllipsisDropdown menu={dropdownMenu(elm)}/>
+					<EllipsisDropdown menu={dropdownMenu(elm)} />
 				</div>
 			)
 		}
 	];
+
+
 	
+
+
 	const rowSelection = {
 		onChange: (key, rows) => {
 			setSelectedRows(rows)
@@ -145,25 +149,26 @@ const Orders = () => {
 
 	const onSearch = e => {
 		const value = e.currentTarget.value
-		const searchArray = e.currentTarget.value? list : OrderListData
+		const searchArray = e.currentTarget.value ? list : OrderListData
 		const data = utils.wildCardSearch(searchArray, value)
 		setList(data)
 		setSelectedRowKeys([])
 	}
 
+	// useEffect()=
 	return (
 		<Card>
 			<Flex alignItems="center" justifyContent="between" mobileFlex={false}>
 				<Flex className="mb-1" mobileFlex={false}>
 					<div className="mr-md-3 mb-3">
-						<Input placeholder="Search" prefix={<SearchOutlined />} onChange={e => onSearch(e)}/>
+						<Input placeholder="Search" prefix={<SearchOutlined />} onChange={e => onSearch(e)} />
 					</div>
 					<div className="mb-3">
-						<Select 
-							defaultValue="All" 
-							className="w-100" 
-							style={{ minWidth: 180 }} 
-							onChange={handleShowStatus} 
+						<Select
+							defaultValue="All"
+							className="w-100"
+							style={{ minWidth: 180 }}
+							onChange={handleShowStatus}
 							placeholder="Status"
 						>
 							<Option value="All">All payment </Option>
@@ -171,13 +176,13 @@ const Orders = () => {
 						</Select>
 					</div>
 				</Flex>
-				
+
 			</Flex>
 			<div className="table-responsive">
-				<Table 
-					columns={tableColumns} 
-					dataSource={list} 
-					rowKey='id' 
+				<Table
+					columns={tableColumns}
+					dataSource={list}
+					rowKey='id'
 					rowSelection={{
 						selectedRowKeys: selectedRowKeys,
 						type: 'checkbox',

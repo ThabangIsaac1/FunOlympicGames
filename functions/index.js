@@ -162,6 +162,7 @@ app.post('/api/events', (req, res) => {
         eventLocation: req.body.eventLocation,
         virtualLink: req.body.virtualLink,
         eventDescription: req.body.eventDescription,
+        status: 'Upcoming',
       })
       return res.status(202).json({ res: 'success' })
     } catch (error) {
