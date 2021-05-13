@@ -4,6 +4,7 @@ import { Card, Table, Select, Input, Button, Badge, Menu, Tag } from 'antd';
 import OrderListData from "assets/data/order-list.data.json"
 import { EyeOutlined, FileExcelOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
+import { useHistory } from 'react-router-dom'
 import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
 import Flex from 'components/shared-components/Flex'
 import NumberFormat from 'react-number-format';
@@ -46,6 +47,11 @@ const Orders = () => {
 	const [eventsData, setEvents] = useState([])
 	const [selectedRows, setSelectedRows] = useState([])
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
+	let history = useHistory()
+
+	const viewEvent = (row) => {
+		history.push(`./view_game`)
+	  }
 
 	const handleShowStatus = value => {
 		if (value !== 'All') {
@@ -72,8 +78,8 @@ const Orders = () => {
 		<Menu>
 			<Menu.Item>
 				<Flex alignItems="center">
-					<EyeOutlined />
-					<span className="ml-2">View Details</span>
+					<EyeOutlined onClick={viewEvent} />
+					<span className="ml-2">Watch</span>
 				</Flex>
 			</Menu.Item>
 			<Menu.Item>

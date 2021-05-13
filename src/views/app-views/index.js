@@ -26,7 +26,11 @@ export const AppViews = () => {
         <Route path={`${APP_PREFIX_PATH}/add-admins`} component={lazy(() => import(`./super-admins/user-management`))} />
         <Route path={`${APP_PREFIX_PATH}/add-event`} component={lazy(() => import(`./admins/admins_addevent`))} />
         <Route path={`${APP_PREFIX_PATH}/subscribers`} component={lazy(() => import(`./subscribers`))} />
-        <Route path={`${APP_PREFIX_PATH}/stream-event`} component={lazy(() => import(`./stream_game`))} />
+        <Route path={`${APP_PREFIX_PATH}/stream-event`} component={lazy(() => import(`./subscribers/stream_game`))} />
+        <Route path={`${APP_PREFIX_PATH}/view_game`} component={lazy(() => import(`./subscribers/stream_game/view_game`))} />
+
+        
+        
 
          <Redirect from={`${APP_PREFIX_PATH}`} to={`${APP_PREFIX_PATH}/`} />
       </Switch>

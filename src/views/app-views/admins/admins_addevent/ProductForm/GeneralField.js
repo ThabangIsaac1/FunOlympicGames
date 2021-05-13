@@ -26,7 +26,7 @@ const GeneralField = (props) => {
     eventDescription: [
       {
         required: true,
-        message: "Please enter product description",
+        message: "Please enter the event description",
       },
     ],
     code: [
@@ -63,7 +63,7 @@ const GeneralField = (props) => {
     virtualLink: [
       {
         required: true,
-        message: "Please enter the event link",
+        message: "Please enter the event streaming id",
       },
 
     ],
@@ -162,7 +162,7 @@ const GeneralField = (props) => {
               <Col xs={24} sm={24} md={12}>
                 <Form.Item name="link" label="Virtual Link" rules={rules.virtualLink}>
                   <Input name="virtulLink" value={data.virtualtLink}
-                    onChange={handle} placeholder="Livestream - Google Link" />
+                    onChange={handle} placeholder="Youtube streamID - HPDSv6CSo_M" />
                 </Form.Item>
               </Col>
 
