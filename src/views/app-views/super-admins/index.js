@@ -389,17 +389,8 @@ export const AnalyticDashboard = () => {
       </Row>
       <Row gutter={16}>
        
-        <Col xs={24} sm={24} md={24} lg={12} xxl={12}>
-          <Card title="Admin Members">
-          <Table
-			pagination={false}
-			columns={tableColumns02} 
-			dataSource={recentOrderData} 
-			rowKey='id'
-		/>
-          </Card>
-        </Col>
-        <Col xs={24} sm={24} md={24} lg={24} xxl={12}>
+     
+        <Col xs={24} sm={24} md={24} lg={24} xxl={24}>
 
         <Card title="List Of Sporting Codes" extra={cardDropdown(latestTransactionOption)}>
             <Table 
