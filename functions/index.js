@@ -47,56 +47,50 @@ app.post('/api/register', (req, res) => {
   const { email, fullName, country } = req.body
   const message = `Thank you for registering to attend the Fun Olympic games!! You are one step away from joining the fantastic moment: Kindly follow this link.\n https://funolympic-fnqi.firebaseapp.com/auth/reset-password?mode=action&oobCode=code `
 
-  ;(async () => {
-    try {
-      auth
-        .createUser({
+  auth
+    .createUser({
+      email: email,
+      emailVerified: false,
+      password: '123456',
+      //country: country,
+      //displayName: fullName,
+      disabled: false,
+      customClaims: { roleId: 1 },
+    })
+    .then(() => {
+      db.collection('subscribers')
+        .add({
           email: email,
-          emailVerified: false,
-          password: '123456',
-          //country: country,
-          //displayName: fullName,
-          disabled: false,
-          customClaims: { roleId: 1 },
+          fullName: fullName,
+          country: country,
         })
         .then(() => {
-          // Save Country and Name
-          try {
-            db.collection('subscribers')
-              .add({
-                email: email,
-                fullName: fullName,
-                country: country,
-              })
-              .then(() => {
-                // Email send to:
-                transporter.sendMail({
-                  to: email,
-                  from: 'funolympic.fnqi@gmail.com',
-                  subject: 'Registeration Credentials',
-                  message: message,
-                  html: `<div>
-                  <h4>Dear Fun Olympic user,${fullName}</h4>   
-                  <p>${message || ''}</p>
-                  <span>
-                      Fun Olympic Games Management
-                  </span>
-                  </div>`,
-                })
-                return res.status(202).json({ res: 'success' })
-              })
-          } catch (error) {
-            console.log(error)
-            return res.status(500).json({ res: 'fail' })
-          }
+          // Email send to:
+          transporter.sendMail({
+            to: email,
+            from: 'funolympic.fnqi@gmail.com',
+            subject: 'Registeration Credentials',
+            message: message,
+            html: `<div>
+            <h4>Dear Fun Olympic user,${fullName}</h4>   
+            <p>${message || ''}</p>
+            <span>
+                Fun Olympic Games Management
+            </span>
+            </div>`,
+          })
 
-          return res.status(202).json('email sent!')
+          return res.status(202).json({ res: 'success' })
         })
-    } catch (error) {
+        .catch((error) => {
+          console.log(error)
+          return res.status(500).json({ res: 'fail' })
+        })
+    })
+    .catch((error) => {
       console.log(error)
-      return res.status(500).send()
-    }
-  })()
+      return res.status(500).json({ res: 'fail' })
+    })
 })
 /*Endpoint Register User*/
 
