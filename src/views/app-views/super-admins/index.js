@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Col, Card, Avatar, Tag,Dropdown, Table, Badge, Menu } from 'antd';
 import RegiondataWidget from 'components/shared-components/RegiondataWidget';
 import DonutChartWidget from 'components/shared-components/DonutChartWidget'
+import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
 import Flex from 'components/shared-components/Flex'
 import NumberFormat from 'react-number-format';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import utils from 'utils'
+import { useHistory } from 'react-router-dom'
+
 import {
    ReloadOutlined,
   PrinterOutlined,
   FileExcelOutlined,
-  EllipsisOutlined
+  EllipsisOutlined,
+  PlusCircleOutlined,
+  EditOutlined,
+  DeleteOutlined
 } from '@ant-design/icons';
 import { 
   
@@ -34,6 +40,77 @@ const rederRegionTopEntrance = (
 )
 
 export const AnalyticDashboard = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [subscribers, setSubscribers] = useState([])
+  const [hasError, setErrors] = useState(false)
+  const [eventsData, setEvents] = useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const [selectedRows, setSelectedRows] = useState([])
+  let history = useHistory()
+
+  useEffect(() => {
+    // console.log()
+    setIsLoading(true)
+    fetch(
+      'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscribers',
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw Error('Error fetching data.')
+        }
+      })
+      .then((subscribers) => {
+        //console.log(subscribers);
+
+        setSubscribers(subscribers)
+      })
+      .catch((error) => {
+        setErrors(error)
+      })
+
+
+     
+      fetch(
+        'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events',
+      )
+        .then((response) => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            throw Error('Error fetching data.')
+          }
+        })
+        .then((eventsData) => {
+          //console.log(subscribers);
+  
+          setEvents(eventsData)
+        })
+        .catch((error) => {
+          setErrors(error)
+        })
+  }, [])
+
+
+
+
+	const dropdownMenu = row => (
+		<Menu>
+			<Menu.Item>
+				<Flex alignItems="center">
+					<EditOutlined onClick={null} />
+					<span className="ml-2">Update</span>
+				</Flex>
+			</Menu.Item>
+			<Menu.Item>
+				<Flex alignItems="center">
+					<  DeleteOutlined />
+					<span className="ml-2">Delete</span>
+				</Flex>
+			</Menu.Item>
+		</Menu>
+	);
 
 
   const cardDropdown = (menu) => (
@@ -43,14 +120,63 @@ export const AnalyticDashboard = () => {
       </a>
     </Dropdown>
   )
-        
+  const rowSelection = {
+		onChange: (key, rows) => {
+			setSelectedRows(rows)
+			setSelectedRowKeys(key)
+		}
+	};
+
+	const onSearch = e => {
+		const value = e.currentTarget.value
+		const searchArray = e.currentTarget.value ? eventsData : eventsData
+		const data = utils.wildCardSearch(searchArray, value)
+		setEvents(data)
+		setSelectedRowKeys([])
+	}
+  const tableCols = [
+		{
+			title: 'Sporting Code',
+			dataIndex: 'codeName',
+			// render: (_, record) => (
+			// 	<div className="d-flex">
+			// 		<AvatarStatus size={30} src={record.image} name={record.name}/>
+			// 	</div>
+			// ),
+			sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
+		},
+    {
+			title: 'Category',
+			dataIndex: 'category',
+			
+			// sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
+		},
+		{
+			title: 'Location',
+			dataIndex: 'eventLocation',
+			
+			// sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
+		},
+
+		{
+			title: '',
+			dataIndex: 'actions',
+			render: (_, elm) => (
+				<div className="text-right">
+					<EllipsisDropdown menu={dropdownMenu(elm)} />
+				</div>
+			)
+		}
+		
+
+	];
 
     
 
    const regionData = [
     {
       color: '#3e82f7',
-      name: 'United States of America',
+      name:   'Botswana',
       value: '37.61%'
       },
       {
@@ -80,48 +206,9 @@ export const AnalyticDashboard = () => {
     }
   ]
 
-  const columns = [
-    { title: 'Name', dataIndex: 'name', key: 'name' },
-    { title: 'Age', dataIndex: 'age', key: 'age' },
-    { title: 'Address', dataIndex: 'address', key: 'address' },
-    {
-      title: 'Action',
-      dataIndex: '',
-      key: 'x',
-      render: () => <a>Delete</a>,
-    },
-  ];
   
-  const data = [
-    {
-      key: 1,
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-    },
-    {
-      key: 2,
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
-    },
-    {
-      key: 3,
-      name: 'Not Expandable',
-      age: 29,
-      address: 'Jiangsu No. 1 Lake Park',
-      description: 'This not expandable',
-    },
-    {
-      key: 4,
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.',
-    },
-  ];
+  
+
   
  const RecentTransactionData = [
 	{
@@ -196,6 +283,32 @@ export const AnalyticDashboard = () => {
   );
 
 
+  const columns = [
+    { title: "Rank", dataIndex: "rank", key: "rank" },
+    { title: "Country", dataIndex: "country", key: "age" },
+    { title: "Gold", dataIndex: "gold", key: "gold" },
+    { title: "Silver", dataIndex: "silver", key: "silver" },
+    { title: "Bronze", dataIndex: "bronze", key: "bronze" },
+    { title: "Total", dataIndex: "total", key: "total" },
+  
+  ];
+
+  const data = [
+    {
+      key: 1,
+      rank: "1",
+      country: "South Africa",
+      gold: "3",
+      silver:"2",
+      bronze:"2",
+      total:"2",
+      description:
+        "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
+    }
+
+   
+   
+  ];
   const tableColumns = [
     {
       title: 'Sporting Code',
@@ -393,13 +506,19 @@ export const AnalyticDashboard = () => {
         <Col xs={24} sm={24} md={24} lg={24} xxl={24}>
 
         <Card title="List Of Sporting Codes" extra={cardDropdown(latestTransactionOption)}>
-            <Table 
-              className="no-border-last" 
-              columns={tableColumns} 
-              dataSource={RecentTransactionData} 
-              rowKey='id' 
-              pagination={false}
-            />
+        <div className="table-responsive">
+				<Table
+					columns={tableCols}
+					dataSource={eventsData}
+					rowKey='id'
+					rowSelection={{
+						selectedRowKeys: selectedRowKeys,
+						type: 'checkbox',
+						preserveSelectedRowKeys: false,
+						...rowSelection,
+					}}
+				/>
+			</div>
           </Card>
 
 
@@ -408,14 +527,18 @@ export const AnalyticDashboard = () => {
 
         <Col xs={24} sm={24} md={24} lg={12} xxl={24}>
           <Card title="Event Log Standings">
-          <Table
-    columns={columns}
-    expandable={{
-      expandedRowRender: record => <p style={{ margin: 0 }}>{record.description}</p>,
-      rowExpandable: record => record.name !== 'Not Expandable',
-    }}
-    dataSource={data}
-  />
+      <Card title="Event Log Standings">
+            <Table
+              columns={columns}
+              expandable={{
+                expandedRowRender: (record) => (
+                  <p style={{ margin: 0 }}>{record.description}</p>
+                ),
+                rowExpandable: (record) => record.name !== "Not Expandable",
+              }}
+              dataSource={data}
+            />
+          </Card>
           </Card>
         </Col>
       </Row>
