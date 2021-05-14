@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Card, Avatar, Tag,Dropdown, Table, Badge, Menu } from 'antd';
+import { Row, Col, Card, Avatar, Tag,Dropdown, Table, Badge, Menu,Modal,message } from 'antd';
 import RegiondataWidget from 'components/shared-components/RegiondataWidget';
 import DonutChartWidget from 'components/shared-components/DonutChartWidget'
 import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
@@ -8,6 +8,7 @@ import NumberFormat from 'react-number-format';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import utils from 'utils'
 import { useHistory } from 'react-router-dom'
+import axios from 'axios'
 
 import {
    ReloadOutlined,
@@ -27,6 +28,7 @@ import {
 } from './AnalyticDashboardData'
 import moment from 'moment'; 
 import { DATE_FORMAT_DD_MM_YYYY } from 'constants/DateConstant'
+import { WindowScroller } from 'react-virtualized';
 
 
 const rederRegionTopEntrance = (
@@ -44,9 +46,11 @@ export const AnalyticDashboard = () => {
   const [subscribers, setSubscribers] = useState([])
   const [hasError, setErrors] = useState(false)
   const [eventsData, setEvents] = useState([])
-  const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const [list, setList] = useState([])
   const [selectedRows, setSelectedRows] = useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState([])
   let history = useHistory()
+  const { confirm } = Modal
 
   useEffect(() => {
     // console.log()
@@ -91,24 +95,60 @@ export const AnalyticDashboard = () => {
           setErrors(error)
         })
   }, [])
+  const deleteRow = (row) => {
+    const objKey = 'id'
+    const id = row.id
+    confirm({
+      title: 'Do you Want to Delete this Sporting Code?',
+      content: 'Once you click OK this job will be deleted .',
+      onOk() {
+        axios
+          .delete(
+            `https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events/${id}`,
+          )
+          .then(() => {
+            message.success(` Delete successful`)
+            window.location.reload()
 
 
+            let data = list
+            if (selectedRows.length > 1) {
+              selectedRows.forEach((elm) => {
+                data = utils.deleteArrayRow(data, objKey, elm.id)
+                setList(data)
+                setSelectedRows([])
+              })
+            } else {
+              data = utils.deleteArrayRow(data, objKey, row.id)
+              setList(data)
+            }
+          })
+      },
+    })
+  }
 
+  const viewDetails = (row) => {
+    history.push(`edit_details/${row.id}`)
+  }
 
 	const dropdownMenu = row => (
 		<Menu>
 			<Menu.Item>
 				<Flex alignItems="center">
-					<EditOutlined onClick={null} />
+					<EditOutlined onClick={() => viewDetails(row)} />
 					<span className="ml-2">Update</span>
 				</Flex>
 			</Menu.Item>
-			<Menu.Item>
-				<Flex alignItems="center">
-					<  DeleteOutlined />
-					<span className="ml-2">Delete</span>
-				</Flex>
-			</Menu.Item>
+      <Menu.Item onClick={() => deleteRow(row)}>
+        <Flex alignItems="center">
+          <DeleteOutlined />
+          <span className="ml-2">
+            {selectedRows.length > 0
+              ? `Delete (${selectedRows.length})`
+              : 'Delete'}
+          </span>
+        </Flex>
+      </Menu.Item>
 		</Menu>
 	);
 

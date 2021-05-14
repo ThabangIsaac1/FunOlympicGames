@@ -252,4 +252,59 @@ app.get('/api/events/:id', (req, res) => {
   })()
 })
 
+//updating a specific sporting code
+app.put('/api/update_code', (req, res) => {
+  ;(async () => {
+    console.log(req.body)
+    try {
+      let eventId = req.body.id
+      let codeName = req.body.codeName
+      let category = req.body.category
+      let eventLocation = req.body.eventLocation
+
+      let query = db.collection('Events')
+      let response
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          if (doc.id === eventId) {
+            db.doc(`Events/${doc.id}`).update({
+              codeName: codeName,
+              category: category,
+              eventLocation: eventLocation
+            })
+            response = {
+              status: 'successs',
+            }
+            break
+          } else {
+            response = {
+              status: 'not successful',
+            }
+          }
+        }
+      })
+      return res.status(200).json({ response })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
+
+//Deleting a specific sporting code
+app.delete('/api/events/:id', (req, res) => {
+  ;(async () => {
+    const id = req.params.id
+    try {
+      const document = db.collection(`Events`).doc(id)
+      await document.delete()
+      return res.status(200).send('Successufully Deleted')
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send()
+    }
+  })()
+})
+
 exports.app = functions.https.onRequest(app)
