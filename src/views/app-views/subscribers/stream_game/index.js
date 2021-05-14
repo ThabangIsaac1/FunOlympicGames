@@ -50,8 +50,8 @@ const Orders = () => {
 	let history = useHistory()
 
 	const viewEvent = (row) => {
-		history.push(`./view_game`)
-	  }
+		history.push(`./view_game/${row.id}`)
+	}
 
 	const handleShowStatus = value => {
 		if (value !== 'All') {
@@ -66,19 +66,19 @@ const Orders = () => {
 
 
 		axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`).
-		then((res) => {
-			// console.log(res.data)
-			setList(res.data)
-			setEvents(res.data)
-		})
+			then((res) => {
+				// console.log(res.data)
+				setList(res.data)
+				setEvents(res.data)
+			})
 
 
 	}, [])
 	const dropdownMenu = row => (
 		<Menu>
-			<Menu.Item>
+			<Menu.Item onClick={() => viewEvent(row)}>
 				<Flex alignItems="center">
-					<EyeOutlined onClick={viewEvent} />
+					<EyeOutlined />
 					<span className="ml-2">Watch</span>
 				</Flex>
 			</Menu.Item>
@@ -90,11 +90,11 @@ const Orders = () => {
 			</Menu.Item>
 		</Menu>
 	);
-// render: (_, record) => (
-// 				<div className="d-flex">
-// 					{/* <AvatarStatus size={30} src={record.image} name={record.name}/> */}
-// 				</div>
-// 			),
+	// render: (_, record) => (
+	// 				<div className="d-flex">
+	// 					{/* <AvatarStatus size={30} src={record.image} name={record.name}/> */}
+	// 				</div>
+	// 			),
 	const tableColumns = [
 		{
 			title: 'Event',
@@ -114,14 +114,14 @@ const Orders = () => {
 		{
 			title: 'Location',
 			dataIndex: 'eventLocation',
-			
+
 			// sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
 		},
 
 		{
 			title: 'Countries Participating',
 			dataIndex: 'countriesParticipating',
-			
+
 			// sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
 		},
 		{
@@ -132,7 +132,7 @@ const Orders = () => {
 			// ),
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'paymentStatus')
 		},
-		
+
 		{
 			title: '',
 			dataIndex: 'actions',
@@ -145,7 +145,7 @@ const Orders = () => {
 	];
 
 
-	
+
 
 
 	const rowSelection = {
@@ -171,7 +171,7 @@ const Orders = () => {
 					<div className="mr-md-3 mb-3">
 						<Input placeholder="Search" prefix={<SearchOutlined />} onChange={e => onSearch(e)} />
 					</div>
-					
+
 				</Flex>
 
 			</Flex>

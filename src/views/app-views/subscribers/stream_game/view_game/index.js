@@ -1,4 +1,4 @@
-import React from "react";
+import {React,useState,useEffect} from "react";
 import {
   Comment,
   Tooltip,
@@ -19,7 +19,7 @@ import moment from "moment";
 import { ImageSvg } from "assets/svg/icon";
 import CustomIcon from "components/util-components/CustomIcon";
 import YouTube from "@u-wave/react-youtube";
-
+import axios  from 'axios'
 const { Dragger } = Upload;
 const { Option } = Select;
 const { TextArea } = Input;
@@ -79,23 +79,35 @@ const beforeUpload = (file) => {
   return isJpgOrPng && isLt2M;
 };
 
-const categories = ["Cloths", "Bags", "Shoes", "Watches", "Devices"];
-const tags = [
-  "Cotton",
-  "Nike",
-  "Sales",
-  "Sports",
-  "Outdoor",
-  "Toys",
-  "Hobbies",
-];
 
-const GeneralField = (props) => (
+
+const GeneralField =(props) => {
+  const {  param } = props
+  
+const [list, setList] = useState([])
+const [events, setEvents] = useState({})
+  useEffect(() => {
+    const { id } = param
+ alert(id)
+    axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events/${id}`).
+    then((res) => {
+      console.log(res.data)
+     
+      setEvents(res.data.virtualLink)
+console.log(props.id)
+     
+    })
+  
+  },[])
+  
+	
+return (
+  <>
   <Row gutter={16}>
     <Col xs={24} sm={16} md={16}>
       <Card hoverable>
         <div className="video-responsive">
-          <YouTube video="HPDSv6CSo_M" autoplay />
+          <YouTube video={events} autoplay />
         </div>
       </Card>
     </Col>
@@ -136,6 +148,8 @@ const GeneralField = (props) => (
 	  </Card>
     </Col>
   </Row>
-);
-
+)
+</>
+)
+      }
 export default GeneralField;
