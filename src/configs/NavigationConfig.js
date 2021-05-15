@@ -79,6 +79,14 @@ const subscriberNavTree = [{
       breadcrumb: false,
       submenu: []
     },
+    // {
+    //   key: 'jobs',
+    //   path: `${APP_PREFIX_PATH}/jobs`,
+    //   title: 'Listed Jobs',
+    //   icon: FileSearchOutlined,
+    //   breadcrumb: false,
+    //   submenu: [],
+    // },
     {
       key: 'watch',
       path: `${APP_PREFIX_PATH}/stream-event`,
