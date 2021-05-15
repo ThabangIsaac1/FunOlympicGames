@@ -44,7 +44,7 @@ app.use(bodyParser.json())
 
 /*Endpoint Register User*/
 app.post('/api/register', (req, res) => {
-  const { email, fullName, country } = req.body
+  const { email, fullName, country, gender } = req.body
   const message = `Thank you for registering to attend the Fun Olympic games!! You are one step away from joining the fantastic moment: Kindly follow this link.\n https://funolympic-fnqi.firebaseapp.com/auth/reset-password?mode=action&oobCode=code `
 
   auth
@@ -55,7 +55,7 @@ app.post('/api/register', (req, res) => {
       //country: country,
       //displayName: fullName,
       disabled: false,
-      customClaims: { roleId: 1 },
+      customClaims: { subscriber: true },
     })
     .then(() => {
       db.collection('subscribers')
@@ -63,6 +63,7 @@ app.post('/api/register', (req, res) => {
           email: email,
           fullName: fullName,
           country: country,
+          gender: gender,
         })
         .then(() => {
           // Email send to:
@@ -94,7 +95,29 @@ app.post('/api/register', (req, res) => {
 })
 /*Endpoint Register User*/
 
-// Reib Admin Claim
+// Super Admin Claim
+app.put('/api/super-admin-claim/:email', (req, res) => {
+  ;(async () => {
+    let { email } = req.params
+
+    try {
+      const user = await auth.getUserByEmail(email)
+
+      auth
+        .setCustomUserClaims(user.uid, {
+          super: true,
+        })
+        .then(() => {
+          return res.status(200).send('Claim changed!')
+        })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
+
+// Olympic Admins Claim
 app.put('/api/olympic-admin-claim/:email', (req, res) => {
   ;(async () => {
     let { email } = req.params
@@ -116,7 +139,7 @@ app.put('/api/olympic-admin-claim/:email', (req, res) => {
   })()
 })
 // Olympic Admins Claim
-app.put('/api/olympic-claim/:email', (req, res) => {
+app.put('/api/subscriber-claim/:email', (req, res) => {
   ;(async () => {
     let { email } = req.params
 
@@ -125,7 +148,7 @@ app.put('/api/olympic-claim/:email', (req, res) => {
 
       auth
         .setCustomUserClaims(user.uid, {
-          super: true,
+          subscriber: true,
         })
         .then(() => {
           return res.status(200).send('Claim changed!')
@@ -220,5 +243,27 @@ app.get('/api/events/:id', (req, res) => {
     }
   })()
 })
+
+/*Endpoint Send Message*/
+app.post('/api/send-message', (req, res) => {
+  const { email, fullName, message } = req.body
+  //const message = `Thank you for registering to attend the Fun Olympic games!! You are one step away from joining the fantastic moment: Kindly follow this link.\n https://funolympic-fnqi.firebaseapp.com/auth/reset-password?mode=action&oobCode=code `
+
+  // Email send to:
+  transporter.sendMail({
+    to: 'funolympic.fnqi@gmail.com',
+    from: 'funolympic.fnqi@gmail.com',
+    subject: `Enquiry from: ${fullName}`,
+    message: message,
+    html: `<div>
+    <h4>Dear admin,</h4>   
+    <p>${message || ''}</p>
+    <span>
+        Reply to: ${email}
+    </span>
+    </div>`,
+  })
+})
+/*Endpoint Send Message*/
 
 exports.app = functions.https.onRequest(app)

@@ -184,9 +184,11 @@ export class CustomFilterPanel extends Component {
             if (this.state.formInput.userType === 'olympic-admin') {
               link =
                 'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/olympic-admin-claim'
-            } else if (this.state.formInput.userType === 'olympic-super-admin') {
+            } else if (
+              this.state.formInput.userType === 'olympic-super-admin'
+            ) {
               link =
-                'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/olympic-super-admin-claim'
+                'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/super-admin-claim'
             }
 
             fetch(`${link}/${this.state.formInput.emailAddress}`, {
@@ -209,7 +211,6 @@ export class CustomFilterPanel extends Component {
                     userType: '',
                     submitLoading: false,
                   },
-                  
                 })
                 this.setState({ ...this.state, submitLoading: false })
                 this.onClose()
@@ -253,7 +254,8 @@ export class CustomFilterPanel extends Component {
 
       documents = documents.filter((doc) => {
         return (
-          doc.userType === 'olympic-admin' || doc.userType === 'olympic-super-admin'
+          doc.userType === 'olympic-admin' ||
+          doc.userType === 'olympic-super-admin'
         )
       })
 
