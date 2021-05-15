@@ -88,11 +88,7 @@ const ProductList = () => {
       <Menu.Item onClick={() => deleteRow(row)}>
         <Flex alignItems="center">
           <DeleteOutlined />
-          <span className="ml-2">
-            {selectedRows.length > 0
-              ? `Delete (${selectedRows.length})`
-              : 'Delete'}
-          </span>
+          Add  Remark
         </Flex>
       </Menu.Item>
     </Menu>
