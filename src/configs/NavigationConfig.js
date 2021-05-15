@@ -2,11 +2,6 @@ import {
   DashboardOutlined,
   UsergroupAddOutlined,
   CalendarOutlined,
-} from '@ant-design/icons'
-import {
-  DashboardOutlined,
-  UsergroupAddOutlined,
-  CalendarOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons'
 import { APP_PREFIX_PATH } from 'configs/AppConfig'
