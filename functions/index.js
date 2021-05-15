@@ -311,6 +311,43 @@ app.put('/api/update_code', (req, res) => {
   })()
 })
 
+//change status of  a specific sporting code
+app.put('/api/ended', (req, res) => {
+  ;(async () => {
+    console.log(req.body)
+    try {
+      let eventId = req.body.id
+      let status = req.body.codeName
+      
+
+      let query = db.collection('Events')
+      let response
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          if (doc.id === eventId) {
+            db.doc(`Events/${doc.id}`).update({
+            
+              status: "Event Ended"
+            })
+            response = {
+              status: 'successs',
+            }
+            break
+          } else {
+            response = {
+              status: 'not successful',
+            }
+          }
+        }
+      })
+      return res.status(200).json({ response })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
 //Deleting a specific sporting code
 app.delete('/api/events/:id', (req, res) => {
   ;(async () => {

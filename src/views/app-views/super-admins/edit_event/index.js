@@ -61,11 +61,9 @@ const Orders = () => {
 		bronze: "",
 		  })
 
-
-	const viewEvent = (row) => {
-	
-		 history.push(`./view_game/${row.id}`) 
-	  }
+		  const viewEvent = (row) => {
+			history.push(`./watch/${row.id}`)
+		  }
 
 	  
 	const AddResults = (row) => {
@@ -207,8 +205,8 @@ const Orders = () => {
 
 		{
 			axios
-			  .delete(
-				`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events/${results.id}`,
+			  .put(
+				`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/ended/${results.id}`,
 			  )
 			  .then(() => {
 				//message.success(` Delete successful`)
