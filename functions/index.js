@@ -8,6 +8,7 @@ const https = require('https')
 const admin = require('firebase-admin')
 const nodemailer = require('nodemailer')
 const sgTransport = require('nodemailer-sendgrid-transport')
+const axios = require('axios')
 
 //const cron = require('node-cron');
 
@@ -52,10 +53,7 @@ app.post('/api/register', (req, res) => {
       email: email,
       emailVerified: false,
       password: '123456',
-      //country: country,
-      //displayName: fullName,
       disabled: false,
-      customClaims: { subscriber: true },
     })
     .then(() => {
       db.collection('subscribers')
@@ -66,22 +64,32 @@ app.post('/api/register', (req, res) => {
           gender: gender,
         })
         .then(() => {
-          // Email send to:
-          transporter.sendMail({
-            to: email,
-            from: 'funolympic.fnqi@gmail.com',
-            subject: 'Registeration Credentials',
-            message: message,
-            html: `<div>
-            <h4>Dear Fun Olympic user,${fullName}</h4>   
-            <p>${message || ''}</p>
-            <span>
-                Fun Olympic Games Management
-            </span>
-            </div>`,
-          })
+          // Update Claim
+          axios
+            .put(
+              `https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscriber-claim/${email}`,
+            )
+            .then(() => {
+              // Email send to:
+              transporter.sendMail({
+                to: email,
+                from: 'funolympic.fnqi@gmail.com',
+                subject: 'Registeration Credentials',
+                message: message,
+                html: `<div>
+                <h4>Dear Fun Olympic user,${fullName}</h4>   
+                <p>${message || ''}</p>
+                <span>
+                    Fun Olympic Games Management
+                </span>
+                </div>`,
+              })
 
-          return res.status(202).json({ res: 'success' })
+              return res.status(202).json({ res: 'success' })
+            })
+            .catch((error) => {
+              console.log(error)
+            })
         })
         .catch((error) => {
           console.log(error)

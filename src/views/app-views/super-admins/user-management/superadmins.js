@@ -190,7 +190,7 @@ export class CustomFilterPanel extends Component {
               link =
                 'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/super-admin-claim'
             }
-
+            this.onClose()
             fetch(`${link}/${this.state.formInput.emailAddress}`, {
               method: 'PUT',
               mode: 'cors',
@@ -213,7 +213,6 @@ export class CustomFilterPanel extends Component {
                   },
                 })
                 this.setState({ ...this.state, submitLoading: false })
-                this.onClose()
               })
               .catch((error) => {
                 console.log(error)
