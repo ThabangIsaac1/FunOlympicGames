@@ -206,7 +206,7 @@ const Orders = () => {
 		{
 			axios
 			  .put(
-				`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/ended/${results.id}`,
+				`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/ended/`,results,
 			  )
 			  .then(() => {
 				//message.success(` Delete successful`)

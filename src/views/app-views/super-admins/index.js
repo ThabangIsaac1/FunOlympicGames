@@ -46,6 +46,7 @@ export const AnalyticDashboard = () => {
   const [subscribers, setSubscribers] = useState([])
   const [hasError, setErrors] = useState(false)
   const [eventsData, setEvents] = useState([])
+  const [eventsResults, setResults] = useState([])
   const [list, setList] = useState([])
   const [selectedRows, setSelectedRows] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
@@ -55,6 +56,27 @@ export const AnalyticDashboard = () => {
   useEffect(() => {
     // console.log()
     setIsLoading(true)
+
+
+    fetch(
+      'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/eventresults',
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw Error('Error fetching data.')
+        }
+      })
+      .then((eventsResults) => {
+        //console.log(subscribers);
+
+        setResults(eventsResults)
+      })
+      .catch((error) => {
+        setErrors(error)
+      })
+
     fetch(
       'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscribers',
     )
@@ -324,26 +346,24 @@ export const AnalyticDashboard = () => {
 
 
   const columns = [
-    { title: "Rank", dataIndex: "rank", key: "rank" },
-    { title: "Country", dataIndex: "country", key: "age" },
+    { title: "Sporting Code", dataIndex: "codeName", key: "codeName" },
     { title: "Gold", dataIndex: "gold", key: "gold" },
     { title: "Silver", dataIndex: "silver", key: "silver" },
     { title: "Bronze", dataIndex: "bronze", key: "bronze" },
-    { title: "Total", dataIndex: "total", key: "total" },
+
   
   ];
 
   const data = [
     {
       key: 1,
-      rank: "1",
-      country: "South Africa",
+      codeName: "South Africa",
       gold: "3",
       silver:"2",
       bronze:"2",
       total:"2",
       description:
-        "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
+        "Event Has Ended Video is still available for viewing. ",
     }
 
    
@@ -567,16 +587,16 @@ export const AnalyticDashboard = () => {
 
         <Col xs={24} sm={24} md={24} lg={12} xxl={24}>
           <Card title="Event Log Standings">
-      <Card title="Event Log Standings">
+      <Card >
             <Table
               columns={columns}
               expandable={{
                 expandedRowRender: (record) => (
-                  <p style={{ margin: 0 }}>{record.description}</p>
+                  <p style={{ margin: 0 }}>Event Has taken place and above are the results. The video is still available for viewing.</p>
                 ),
                 rowExpandable: (record) => record.name !== "Not Expandable",
               }}
-              dataSource={data}
+              dataSource={eventsResults}
             />
           </Card>
           </Card>

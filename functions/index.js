@@ -223,6 +223,29 @@ app.get('/api/events', (req, res) => {
   })()
 })
 
+// Getting all results
+app.get('/api/eventresults', (req, res) => {
+  ;(async () => {
+    try {
+      let query = db.collection('Results')
+      let response = []
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          const selectedItem = {
+            id: doc.id,
+            ...doc.data(),
+          }
+          response.push(selectedItem)
+        }
+      })
+      return res.status(200).send(response)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
 
 // Getting all subscribers
 app.get('/api/subscribers', (req, res) => {
