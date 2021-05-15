@@ -100,7 +100,7 @@ export const AnalyticDashboard = () => {
     const id = row.id
     confirm({
       title: 'Do you Want to Delete this Sporting Code?',
-      content: 'Once you click OK this job will be deleted .',
+      content: 'Once you click OK this Sporting Code will be deleted .',
       onOk() {
         axios
           .delete(
@@ -108,7 +108,7 @@ export const AnalyticDashboard = () => {
           )
           .then(() => {
             message.success(` Delete successful`)
-            window.location.reload()
+            //window.location.reload()
 
 
             let data = list
