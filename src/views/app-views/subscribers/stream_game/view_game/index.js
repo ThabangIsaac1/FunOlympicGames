@@ -1,4 +1,4 @@
-import {React,useState,useEffect} from "react";
+import { React, useState, useEffect } from "react";
 import {
   Comment,
   Tooltip,
@@ -12,14 +12,14 @@ import {
   Select,
   Button,
   Input,
- 
+
 } from "antd";
-import {  CommentOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { CommentOutlined, ShareAltOutlined } from '@ant-design/icons';
 import moment from "moment";
 import { ImageSvg } from "assets/svg/icon";
 import CustomIcon from "components/util-components/CustomIcon";
 import YouTube from "@u-wave/react-youtube";
-import axios  from 'axios'
+import axios from 'axios'
 const { Dragger } = Upload;
 const { Option } = Select;
 const { TextArea } = Input;
@@ -81,75 +81,76 @@ const beforeUpload = (file) => {
 
 
 
-const GeneralField =(props) => {
-  const {  param } = props
-  
-const [list, setList] = useState([])
-const [events, setEvents] = useState({})
+const GeneralField = (props) => {
+ const { param } = props;
+
+  const [list, setList] = useState([])
+  const [data, setData] = useState([])
+  const [events, setEvents] = useState({})
   useEffect(() => {
-    const { id } = param
- alert(id)
-    axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events/${id}`).
-    then((res) => {
-      console.log(res.data)
-     
-      setEvents(res.data.virtualLink)
-console.log(props.id)
-     
-    })
-  
-  },[])
-  
-	
-return (
-  <>
-  <Row gutter={16}>
-    <Col xs={24} sm={16} md={16}>
-      <Card hoverable>
-        <div className="video-responsive">
-          <YouTube video={events} autoplay />
-        </div>
-      </Card>
-    </Col>
-    <Col xs={24} sm={8} md={7}>
-	<Card hoverable>
-      <Comment
-        author={<a>Han Solo</a>}
-        avatar={
-          <Avatar
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="Han Solo"
-          />
-        }
-        content={
-          <p style={{ textAlign: "justify" }}>
-            Incredible Hurdle race, I think bolt should have started the race though.Jamaica would have won the race.
+    // const { id } = param
+    
+        axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events
+        
+        `).
+        then((res) => {
+          console.log(res.data)
+          setEvents(res.data.virtualLink)
+          
+
+        })
+  }, [])
+
+
+  return (
+    <>
+      <Row gutter={16}>
+        <Col xs={24} sm={16} md={16}>
+          <Card hoverable>
+            <div className="video-responsive">
+              <YouTube video={events} autoplay />
+            </div>
+          </Card>
+        </Col>
+        <Col xs={24} sm={8} md={7}>
+          <Card hoverable>
+            <Comment
+              author={<a>Han Solo</a>}
+              avatar={
+                <Avatar
+                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                  alt="Han Solo"
+                />
+              }
+              content={
+                <p style={{ textAlign: "justify" }}>
+                  Incredible Hurdle race, I think bolt should have started the race though.Jamaica would have won the race.
           </p>
-        }
-        datetime={
-          <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
-            <span>{moment().fromNow()}</span>
-          </Tooltip>
-        }
-      />
-	   <Form.Item style={{paddingTop:30}}>
-      <TextArea rows={2}  />
-    </Form.Item>
-    <Form.Item>
-	<Button type="primary" icon={<CommentOutlined />}>
-      Comment
+              }
+              datetime={
+                <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
+                  <span>{moment().fromNow()}</span>
+                </Tooltip>
+              }
+            />
+            <Form.Item style={{ paddingTop: 30 }}>
+              <TextArea name="comment" value={data.comment} rows={2} />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" onClick={null} icon={<CommentOutlined />}>
+                Comment
     </Button>
 
-	<Tooltip title="Share" >
-      <Button shape="circle"  icon={<ShareAltOutlined style={{color:"green"}} />} style={{float:"right"}}/>
-    </Tooltip>
+              <Tooltip title="Share" >
+                <Button shape="circle" icon={<ShareAltOutlined style={{ color: "green" }} />} style={{ float: "right" }} />
+              </Tooltip>
 
-    </Form.Item>
-	  </Card>
-    </Col>
-  </Row>
+            </Form.Item>
+          </Card>
+        </Col>
+      </Row>
 )
-</>
-)
-      }
+    </>
+  )
+}
 export default GeneralField;

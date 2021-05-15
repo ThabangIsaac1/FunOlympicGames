@@ -44,6 +44,9 @@ const paymentStatusList = ['Paid', 'Pending', 'Expired']
 const Orders = () => {
 
 	const [list, setList] = useState([])
+	const [data, setData] = useState({
+		comment:''
+})
 	const [eventsData, setEvents] = useState([])
 	const [selectedRows, setSelectedRows] = useState([])
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
