@@ -1,5 +1,5 @@
 import { 
-  DashboardOutlined,UsergroupAddOutlined,CalendarOutlined  
+  DashboardOutlined,UsergroupAddOutlined,CalendarOutlined,VideoCameraOutlined  
 } from '@ant-design/icons';
 import { APP_PREFIX_PATH } from 'configs/AppConfig'
 
@@ -52,6 +52,14 @@ const adminAdminNavTree = [{
       icon: CalendarOutlined ,
       breadcrumb: false,
       submenu: []
+    },
+    {
+      key: 'event',
+      path: `${APP_PREFIX_PATH}/event-edit`,
+      title: 'Event Updates',
+      icon: VideoCameraOutlined ,
+      breadcrumb: false,
+      submenu: []
     }
   ]
 }]
@@ -75,7 +83,7 @@ const subscriberNavTree = [{
       key: 'watch',
       path: `${APP_PREFIX_PATH}/stream-event`,
       title: 'Stream Event',
-      icon: CalendarOutlined ,
+      icon: VideoCameraOutlined ,
       breadcrumb: false,
       submenu: []
     }

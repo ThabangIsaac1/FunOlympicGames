@@ -158,6 +158,25 @@ app.get('/api/retrieve-claim/:email', (req, res) => {
   })()
 })
 
+//Post Results
+app.post('/api/results', (req, res) => {
+  ;(async () => {
+    try {
+      db.collection('Results').add({
+        id: req.body.id,
+        gold: req.body.gold,
+        silver: req.body.silver,
+        bronze: req.body.bronze,
+        codeName: req.body.codeName,
+            })
+      return res.status(202).json({ res: 'success' })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ res: 'fail' })
+    }
+  })()
+})
+
 // Post an Event
 app.post('/api/events', (req, res) => {
   ;(async () => {
@@ -306,5 +325,7 @@ app.delete('/api/events/:id', (req, res) => {
     }
   })()
 })
+
+
 
 exports.app = functions.https.onRequest(app)

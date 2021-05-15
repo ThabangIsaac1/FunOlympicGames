@@ -28,6 +28,7 @@ export const AppViews = () => {
         <Route path={`${APP_PREFIX_PATH}/subscribers`} component={lazy(() => import(`./subscribers`))} />
         <Route path={`${APP_PREFIX_PATH}/stream-event`} component={lazy(() => import(`./subscribers/stream_game`))} />
         <Route path={`${APP_PREFIX_PATH}/view_game`} component={lazy(() => import(`./subscribers/stream_game/view_game`))} />
+        <Route path={`${APP_PREFIX_PATH}/event-edit`} component={lazy(() => import(`./super-admins/edit_event`))} />
         <Route
           path={`${APP_PREFIX_PATH}/edit_details/:id`}
           component={lazy(() => import(`./super-admins/edit_details`))}

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { Card, Table, Select, Input, Button, Badge, Menu, Tag } from 'antd';
+import { Card, Table, Select, Input, Button, Badge, Menu, Modal,Form, message } from 'antd';
 import OrderListData from "assets/data/order-list.data.json"
 import { EyeOutlined, FileExcelOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
@@ -29,6 +29,10 @@ const getPaymentStatus = status => {
 	return ''
 }
 
+const layout = {
+    labelCol: { span: 5 },
+    wrapperCol: { span: 16 },
+  };
 const getShippingStatus = status => {
 	if (status === 'Ready') {
 		return 'blue'
@@ -42,17 +46,37 @@ const getShippingStatus = status => {
 const paymentStatusList = ['Paid', 'Pending', 'Expired']
 
 const Orders = () => {
-
+	const [modal1Visible, setModal1Visible] = useState(false);
 	const [list, setList] = useState([])
 	const [eventsData, setEvents] = useState([])
 	const [selectedRows, setSelectedRows] = useState([])
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
 	let history = useHistory()
 
+	const [results, setResults] = useState({
+		id: "",
+		codeName: "",
+		gold: "",
+		silver: "",
+		bronze: "",
+		  })
+
+
 	const viewEvent = (row) => {
 	
 		 history.push(`./view_game/${row.id}`) 
 	  }
+
+	  
+	const AddResults = (row) => {
+		
+		setModal1Visible(true);
+		results.id = row.id;
+		results.codeName = row.codeName;
+		
+		
+
+	 }
 
 	const handleShowStatus = value => {
 		if (value !== 'All') {
@@ -83,7 +107,13 @@ const Orders = () => {
 					<span className="ml-2">Watch</span>
 				</Flex>
 			</Menu.Item>
-				</Menu>
+			<Menu.Item>
+				<Flex alignItems="center">
+					<PlusCircleOutlined  onClick={() => AddResults(row)} />
+					<span className="ml-2">Add Results</span>
+				</Flex>
+			</Menu.Item>
+		</Menu>
 	);
 // render: (_, record) => (
 // 				<div className="d-flex">
@@ -140,7 +170,15 @@ const Orders = () => {
 	];
 
 
+	const validateMessages = {
+		required: 'This field is required!',
+		types: {
+		  gold: 'Please specify country!',
+		  silver: 'Please specify country!',
+		  bronze: 'Please specify country!',
+		}	
 	
+	  };
 
 
 	const rowSelection = {
@@ -157,7 +195,30 @@ const Orders = () => {
 		setList(data)
 		setSelectedRowKeys([])
 	}
+	const handle = (e) => {
+		setResults({ ...results, [e.target.name]: e.target.value })
+	  }
 
+	const submitResults = () => {
+		setModal1Visible(false)
+		axios.post(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/results`, results).then(() => {
+			message.success(` Results Updated successful`)
+		});
+
+		{
+			axios
+			  .delete(
+				`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events/${results.id}`,
+			  )
+			  .then(() => {
+				//message.success(` Delete successful`)
+				
+	
+				
+			  })
+		  }
+
+	  }
 	// useEffect()=
 	return (
 		<Card>
@@ -183,6 +244,35 @@ const Orders = () => {
 					}}
 				/>
 			</div>
+			<Modal
+            title="Publish Results"
+            style={{ top: 20 }}
+            visible={modal1Visible}
+            onOk={submitResults}
+            onCancel={() => setModal1Visible(false)}
+          >
+
+            <Form
+              {...layout} name="nest-messages"
+              onFinish={null}
+              validateMessages={validateMessages}>
+
+				<Form.Item label="Sporting Code" >
+                <Input type="codeName" name="codeName" value={results.codeName}   readOnly/>
+              </Form.Item>			
+
+              <Form.Item label="Gold Medal" rules={[{ required: true }]}>
+                <Input type="gold" name="gold" value={results.gold} onChange={handle} placeholder="Country 01" style={{backgroundColor:"gold",color:"white"}}/>
+              </Form.Item>
+
+			  <Form.Item label="Silver Medal" rules={[{ required: true }]}>
+                <Input type="silver" name="silver" value={results.silver} onChange={handle} placeholder="Country 02"  style={{backgroundColor:"silver",color:"white"}}/>
+              </Form.Item>
+			  <Form.Item label="Bronze Medal" rules={[{ required: true }]}>
+                <Input type="bronze" name="bronze" value={results.bronze} onChange={handle} placeholder="Country 03" style={{backgroundColor:"#cd7f32",color:"white"}}/>
+              </Form.Item>
+            </Form>
+          </Modal>
 		</Card>
 	)
 }
