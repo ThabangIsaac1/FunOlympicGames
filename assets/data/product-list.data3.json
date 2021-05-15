@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1232,
+    "name": "Thato",
+    "surname": "Rantona",
+    "category": "Student",
+    "email": "trantona@gmail.com",
+    "contact": "74321296",
+    "membershipFee": "Paid"
+  },
+  {
+    "id": 1893,
+    "name": "Pearl",
+    "surname": "Mokaila",
+    "category": "Student",
+    "email": "pearlmok@yahoo.com",
+    "contact": "72459069",
+    "membershipFee": "Paid"
+  },
+  {
+    "id": 1653,
+    "name": "Ronald",
+    "surname": "Rampa",
+    "category": "Full Member",
+    "email": "ronrampa@revolve.co.bw",
+    "contact": "71259737",
+    "membershipFee": "Not Paid"
+  },
+  {
+    "id": 1653,
+    "name": "Rinae",
+    "surname": "Maumela",
+    "category": "Full Member",
+    "email": "rinaem@yahoo.com",
+    "contact": "71716251",
+    "membershipFee": "Paid"
+  },
+  {
+    "id": 1885,
+    "name": "Roya",
+    "surname": "Mahmoudi",
+    "category": "Full Member",
+    "email": "roya@gmail.com",
+    "contact": "73826152",
+    "membershipFee": "Paid"
+  },
+  {
+    "id": 1588,
+    "name": "Thabo",
+    "surname": "Motsumi",
+    "category": "Full Member",
+    "email": "motsumij@gmail.com",
+    "contact": "71259737",
+    "membershipFee": "Not Paid"
+  },
+  {
+    "id": 1099,
+    "name": "Lebogang",
+    "surname": "Dlamini",
+    "category": "Student",
+    "email": "lebod@yahoo.com",
+    "contact": "72882918",
+    "membershipFee": "Not Paid"
+  },
+  {
+    "id": 1222,
+    "name": "Oliver",
+    "surname": "Sihamba",
+    "category": "Full Member",
+    "email": "sihamba@gmail.com",
+    "contact": "71259737",
+    "membershipFee": "Not Paid"
+  },
+  {
+    "id": 1263,
+    "name": "Resego",
+    "surname": "Maake",
+    "category": "Full Member",
+    "email": "ronrampa@revolve.co.bw",
+    "contact": "71259737",
+    "membershipFee": "Not Paid"
+  }
+]

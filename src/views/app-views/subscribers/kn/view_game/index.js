@@ -104,6 +104,8 @@ const GeneralField = (props) => {
 
   return (
     <>
+
+
       <Row gutter={16}>
         <Col xs={24} sm={16} md={16}>
           <Card hoverable>
@@ -150,6 +152,8 @@ const GeneralField = (props) => {
         </Col>
       </Row>
 )
+   
+   
     </>
   )
 }

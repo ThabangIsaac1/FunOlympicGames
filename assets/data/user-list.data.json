@@ -1,0 +1,97 @@
+[
+  {
+    "id": "eileenHorton-1153",
+    "name": "Eileen Horton",
+    "email": "eileen_h@hotmail.com",
+    "role": "Puso Kgosi",
+    "type": "REIB Member",
+    "lastOnline": 1573430400,
+    "status": "active",
+    "personalInfo": {
+      "location": "New York, US",
+      "title": "Product Manager",
+      "birthday": "10/10/1992",
+      "phoneNumber": "+12-123-1234",
+      "facebook": "facebook.com/sample",
+      "twitter": "twitter.com/sample",
+      "instagram": "instagram.com/sample",
+      "site": "samplesite.com"
+    }
+  },
+  {
+    "id": "eileenHorton-1153",
+    "name": "Sarah Radebe",
+    "email": "eileen_h@hotmail.com",
+    "role": "Kamogelo Moyo",
+    "type": "Landlord",
+    "lastOnline": 1573430400,
+    "status": "active",
+    "personalInfo": {
+      "location": "New York, US",
+      "title": "Product Manager",
+      "birthday": "10/10/1992",
+      "phoneNumber": "+12-123-1234",
+      "facebook": "facebook.com/sample",
+      "twitter": "twitter.com/sample",
+      "instagram": "instagram.com/sample",
+      "site": "samplesite.com"
+    }
+  },
+  {
+    "id": "eileenHorton-1153",
+    "name": "Eileen Kaba",
+    "email": "eileen_h@hotmail.com",
+    "role": "Paul Sithole",
+    "type": "Tenant",
+    "lastOnline": 1573430400,
+    "status": "active",
+    "personalInfo": {
+      "location": "New York, US",
+      "title": "Product Manager",
+      "birthday": "10/10/1992",
+      "phoneNumber": "+12-123-1234",
+      "facebook": "facebook.com/sample",
+      "twitter": "twitter.com/sample",
+      "instagram": "instagram.com/sample",
+      "site": "samplesite.com"
+    }
+  },
+  {
+    "id": "eileenHorton-1153",
+    "name": "Kutlwano Mfazi",
+    "email": "eileen_h@hotmail.com",
+    "role": "Rob James",
+    "type": "REIB Member",
+    "lastOnline": 1573430400,
+    "status": "blocked",
+    "personalInfo": {
+      "location": "New York, US",
+      "title": "Product Manager",
+      "birthday": "10/10/1992",
+      "phoneNumber": "+12-123-1234",
+      "facebook": "facebook.com/sample",
+      "twitter": "twitter.com/sample",
+      "instagram": "instagram.com/sample",
+      "site": "samplesite.com"
+    }
+  },
+  {
+    "id": "eileenHorton-1153",
+    "name": "Thabani Moeti",
+    "email": "eileen_h@hotmail.com",
+    "role": "Kgosi Jacobs",
+    "type": "REIB Member",
+    "lastOnline": 1573430400,
+    "status": "active",
+    "personalInfo": {
+      "location": "New York, US",
+      "title": "Product Manager",
+      "birthday": "10/10/1992",
+      "phoneNumber": "+12-123-1234",
+      "facebook": "facebook.com/sample",
+      "twitter": "twitter.com/sample",
+      "instagram": "instagram.com/sample",
+      "site": "samplesite.com"
+    }
+  }
+]

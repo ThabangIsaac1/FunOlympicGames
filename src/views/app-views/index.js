@@ -1,4 +1,4 @@
-import React, { lazy, Suspense,useContext } from "react";
+import React, { lazy, Suspense, useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Loading from 'components/shared-components/Loading';
 import { APP_PREFIX_PATH } from 'configs/AppConfig'
@@ -9,10 +9,10 @@ export const AppViews = () => {
   const { currentUser, userDetails } = useContext(UserContext)
 
   return (
-    <Suspense fallback={<Loading cover="content"/>}>
+    <Suspense fallback={<Loading cover="content" />}>
       <Switch>
 
-      {!!currentUser ? (
+        {!!currentUser ? (
           <Route
             path={`${APP_PREFIX_PATH}/`}
             component={lazy(() => import(`./super-admins`))}
@@ -22,21 +22,24 @@ export const AppViews = () => {
           <Redirect to="/auth/login" />
         )}
 
-      
+
         <Route path={`${APP_PREFIX_PATH}/add-admins`} component={lazy(() => import(`./super-admins/user-management`))} />
         <Route path={`${APP_PREFIX_PATH}/add-event`} component={lazy(() => import(`./admins/admins_addevent`))} />
         <Route path={`${APP_PREFIX_PATH}/subscribers`} component={lazy(() => import(`./subscribers`))} />
-        <Route path={`${APP_PREFIX_PATH}/stream-event`} component={lazy(() => import(`./subscribers/stream_game`))} />
-        <Route path={`${APP_PREFIX_PATH}/view_game/:id`} component={lazy(() => import(`./subscribers/stream_game/view_game`))} />
+        {/* <Route path={`${APP_PREFIX_PATH}/stream-event`} component={lazy(() => import(`./subscribers/stream_game`))} /> */}
+        {/* <Route path={`${APP_PREFIX_PATH}/view_game/:id`} component={lazy(() => import(`./subscribers/stream_game/view_game`))} /> */}
         <Route
           path={`${APP_PREFIX_PATH}/edit_details/:id`}
           component={lazy(() => import(`./super-admins/edit_details`))}
         />
+        <Route path={`${APP_PREFIX_PATH}/stream-event`} component={lazy(() => import(`./subscribers/stream_game`))} />
 
-        
-        
 
-         <Redirect from={`${APP_PREFIX_PATH}`} to={`${APP_PREFIX_PATH}/`} />
+        <Route path={`${APP_PREFIX_PATH}/watch/:id`} component={lazy(() => import(`./subscribers/stream_game/watch`))} />
+
+
+
+        <Redirect from={`${APP_PREFIX_PATH}`} to={`${APP_PREFIX_PATH}/`} />
       </Switch>
     </Suspense>
   )
