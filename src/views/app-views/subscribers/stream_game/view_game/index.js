@@ -83,23 +83,23 @@ const beforeUpload = (file) => {
 
 const GeneralField = (props) => {
  const { param } = props;
-
-  const [list, setList] = useState([])
+ const { id } = param
   const [data, setData] = useState([])
   const [events, setEvents] = useState({})
   useEffect(() => {
-    // const { id } = param
+   
     
-        axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events
-        
+        axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events/
+        ${id}
         `).
         then((res) => {
           console.log(res.data)
           setEvents(res.data.virtualLink)
           
-
         })
   }, [])
+
+
 
 
   return (
