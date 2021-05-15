@@ -101,6 +101,7 @@ const GeneralField = (props) => {
    
       axios.post(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`, data,).then(() => {
         message.success('Event has been successfully added')
+        
         setData({
           codeName: '',
           category: '',
@@ -111,6 +112,7 @@ const GeneralField = (props) => {
           eventDescription: ''
         })
       })
+  
     
   }
 
@@ -160,8 +162,8 @@ const GeneralField = (props) => {
                 </Form.Item>
               </Col>
               <Col xs={24} sm={24} md={12}>
-                <Form.Item name="link" label="Virtual Link" rules={rules.virtualLink}>
-                  <Input name="virtulLink" value={data.virtualtLink}
+                <Form.Item name="virtualLink" label="Virtual Link" rules={rules.virtualLink}>
+                  <Input name="virtualLink" value={data.virtualLink}
                     onChange={handle} placeholder="Youtube streamID - HPDSv6CSo_M" />
                 </Form.Item>
               </Col>

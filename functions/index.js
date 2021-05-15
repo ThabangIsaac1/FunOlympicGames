@@ -175,6 +175,25 @@ app.get('/api/retrieve-claim/:email', (req, res) => {
   })()
 })
 
+//Post Results
+app.post('/api/results', (req, res) => {
+  ;(async () => {
+    try {
+      db.collection('Results').add({
+        id: req.body.id,
+        gold: req.body.gold,
+        silver: req.body.silver,
+        bronze: req.body.bronze,
+        codeName: req.body.codeName,
+      })
+      return res.status(202).json({ res: 'success' })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ res: 'fail' })
+    }
+  })()
+})
+
 // Post an Event
 app.post('/api/events', (req, res) => {
   ;(async () => {
@@ -202,6 +221,54 @@ app.get('/api/events', (req, res) => {
   ;(async () => {
     try {
       let query = db.collection('Events')
+      let response = []
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          const selectedItem = {
+            id: doc.id,
+            ...doc.data(),
+          }
+          response.push(selectedItem)
+        }
+      })
+      return res.status(200).send(response)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
+
+// Getting all results
+app.get('/api/eventresults', (req, res) => {
+  ;(async () => {
+    try {
+      let query = db.collection('Results')
+      let response = []
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          const selectedItem = {
+            id: doc.id,
+            ...doc.data(),
+          }
+          response.push(selectedItem)
+        }
+      })
+      return res.status(200).send(response)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
+
+// Getting all subscribers
+app.get('/api/subscribers', (req, res) => {
+  ;(async () => {
+    try {
+      let query = db.collection('subscribers')
       let response = []
       await query.get().then((querySnapshot) => {
         let docs = querySnapshot.docs
@@ -265,5 +332,94 @@ app.post('/api/send-message', (req, res) => {
   })
 })
 /*Endpoint Send Message*/
+//updating a specific sporting code
+app.put('/api/update_code', (req, res) => {
+  ;(async () => {
+    console.log(req.body)
+    try {
+      let eventId = req.body.id
+      let codeName = req.body.codeName
+      let category = req.body.category
+      let eventLocation = req.body.eventLocation
+
+      let query = db.collection('Events')
+      let response
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          if (doc.id === eventId) {
+            db.doc(`Events/${doc.id}`).update({
+              codeName: codeName,
+              category: category,
+              eventLocation: eventLocation,
+            })
+            response = {
+              status: 'successs',
+            }
+            break
+          } else {
+            response = {
+              status: 'not successful',
+            }
+          }
+        }
+      })
+      return res.status(200).json({ response })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
+
+//change status of  a specific sporting code
+app.put('/api/ended', (req, res) => {
+  ;(async () => {
+    console.log(req.body)
+    try {
+      let eventId = req.body.id
+      let status = req.body.codeName
+
+      let query = db.collection('Events')
+      let response
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          if (doc.id === eventId) {
+            db.doc(`Events/${doc.id}`).update({
+              status: 'Event Ended',
+            })
+            response = {
+              status: 'successs',
+            }
+            break
+          } else {
+            response = {
+              status: 'not successful',
+            }
+          }
+        }
+      })
+      return res.status(200).json({ response })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
+//Deleting a specific sporting code
+app.delete('/api/events/:id', (req, res) => {
+  ;(async () => {
+    const id = req.params.id
+    try {
+      const document = db.collection(`Events`).doc(id)
+      await document.delete()
+      return res.status(200).send('Successufully Deleted')
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send()
+    }
+  })()
+})
 
 exports.app = functions.https.onRequest(app)

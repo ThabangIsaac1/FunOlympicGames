@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "location": "Partial",
+    "image": "/img/thumbs/p1.jpg",
+    "description": "4 bedrooms, this very spacious, modern home features an air-conditioned open plan lounge and dining area, fitted kitchen,study, 3 bedrooms sharing a common bathroom.",
+    "price": 3500,
+    "listing": "For Sale"
+  },
+  {
+    "id": 2,
+    "location": "Kgale View",
+    "image": "/img/thumbs/p2.jpg",
+    "description": "2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious, modern home features an air-conditioned open plan lounge and dining area, fitted kitchen,study, 2 bedrooms sharing a common bathroom.",
+    "price":45000,
+    "listing": "For Rent"
+  },
+  {
+    "id": 3,
+    "location": "Block 8",
+    "image": "/img/thumbs/p3.jpg",
+    "description": "2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious,2 bedrooms, this very spacious, modern home features an air-conditioned open plan lounge and dining area, fitted kitchen,study, 2 bedrooms sharing a common bathroom.",
+    "price": 70000,
+    "listing": "For Sale"
+  }
+]
