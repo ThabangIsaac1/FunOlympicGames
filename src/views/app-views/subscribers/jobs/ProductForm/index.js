@@ -16,6 +16,7 @@ import moment from 'moment'
 import axios from 'axios'
 
 import YouTube from "@u-wave/react-youtube";
+import { set } from 'lodash';
 
 
 const ADD = 'ADD'
@@ -24,7 +25,7 @@ const EDIT = 'EDIT'
 const ProductForm = (props) => {
   const { mode = ADD, param } = props
   const [events, setEvents] = useState({})
-
+  const [comments, setComments] = useState({})
  
    useEffect(() => {
 
@@ -39,7 +40,7 @@ const ProductForm = (props) => {
       then((res) => {
         console.log(res.data)
         setEvents(res.data.virtualLink)  
-      })}
+      })} 
   }, [])
 
   
@@ -49,7 +50,10 @@ const ProductForm = (props) => {
   }
 
   const submit = () => {
-    
+    axios.post(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/eventsComments/`).then(()=>{
+      setComments(res.data)
+      console.log(res.data)
+    })
   }
 
   return (
@@ -76,8 +80,10 @@ const ProductForm = (props) => {
               }
               content={
                 <p style={{ textAlign: "justify" }}>
-                  Incredible Hurdle race, I think bolt should have started the race though.Jamaica would have won the race.
+              {  comments.comment}
           </p>
+          
+
               }
               datetime={
                 <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
@@ -86,10 +92,10 @@ const ProductForm = (props) => {
               }
             />
             <Form.Item style={{ paddingTop: 30 }}>
-              <TextArea name="comment" value={data.comment} rows={2} />
+              <TextArea name="comment" value={comments.comment} rows={2} />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" onClick={null} icon={<CommentOutlined />}>
+              <Button type="primary" onClick={submit} icon={<CommentOutlined />}>
                 Comment
     </Button>
 

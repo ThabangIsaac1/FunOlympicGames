@@ -326,6 +326,21 @@ app.delete('/api/events/:id', (req, res) => {
   })()
 })
 
-
+app.post('/api/eventComments', (req, res) => {
+  ;(async () => {
+    try {
+      db.collection('Comments').add({
+        fullname: req.body.fullName,
+        comment: req.body.comment,
+     //   eventDescription: req.body.eventDescription,
+    //    status: 'Upcoming',
+      })
+      return res.status(202).json({ res: 'success' })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ res: 'fail' })
+    }
+  })()
+})
 
 exports.app = functions.https.onRequest(app)
