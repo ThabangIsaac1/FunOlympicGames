@@ -50,7 +50,8 @@ const Orders = () => {
 	let history = useHistory()
 
 	const viewEvent = (row) => {
-		history.push(`./view_game`)
+	
+		 history.push(`./view_game/${row.id}`) 
 	  }
 
 	const handleShowStatus = value => {
@@ -78,7 +79,7 @@ const Orders = () => {
 		<Menu>
 			<Menu.Item>
 				<Flex alignItems="center">
-					<EyeOutlined onClick={viewEvent} />
+					<EyeOutlined onClick={() => viewEvent(row)} />
 					<span className="ml-2">Watch</span>
 				</Flex>
 			</Menu.Item>

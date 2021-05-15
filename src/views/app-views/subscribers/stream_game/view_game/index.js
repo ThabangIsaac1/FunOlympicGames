@@ -1,4 +1,6 @@
 import React from "react";
+import { Facebook, Twitter } from "react-sharingbuttons";
+import "react-sharingbuttons/dist/main.css";
 import {
   Comment,
   Tooltip,
@@ -12,9 +14,8 @@ import {
   Select,
   Button,
   Input,
- 
 } from "antd";
-import {  CommentOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { CommentOutlined, ShareAltOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { ImageSvg } from "assets/svg/icon";
 import CustomIcon from "components/util-components/CustomIcon";
@@ -23,6 +24,7 @@ import YouTube from "@u-wave/react-youtube";
 const { Dragger } = Upload;
 const { Option } = Select;
 const { TextArea } = Input;
+
 
 
 const rules = {
@@ -100,40 +102,41 @@ const GeneralField = (props) => (
       </Card>
     </Col>
     <Col xs={24} sm={8} md={7}>
-	<Card hoverable>
-      <Comment
-        author={<a>Han Solo</a>}
-        avatar={
-          <Avatar
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="Han Solo"
-          />
-        }
-        content={
-          <p style={{ textAlign: "justify" }}>
-            Incredible Hurdle race, I think bolt should have started the race though.Jamaica would have won the race.
-          </p>
-        }
-        datetime={
-          <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
-            <span>{moment().fromNow()}</span>
-          </Tooltip>
-        }
-      />
-	   <Form.Item style={{paddingTop:30}}>
-      <TextArea rows={2}  />
-    </Form.Item>
-    <Form.Item>
-	<Button type="primary" icon={<CommentOutlined />}>
-      Comment
-    </Button>
+      <Card hoverable>
+        <Comment
+          author={<a>Han Solo</a>}
+          avatar={
+            <Avatar
+              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              alt="Han Solo"
+            />
+          }
+          content={
+            <p style={{ textAlign: "justify" }}>
+              Incredible Hurdle race, I think bolt should have started the race
+              though.Jamaica would have won the race.
+            </p>
+          }
+          datetime={
+            <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
+              <span>{moment().fromNow()}</span>
+            </Tooltip>
+          }
+        />
+        <Form.Item style={{ paddingTop: 30 }}>
+          <TextArea rows={2} />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" icon={<CommentOutlined />}>
+            Comment
+          </Button>
 
-	<Tooltip title="Share" >
-      <Button shape="circle"  icon={<ShareAltOutlined style={{color:"green"}} />} style={{float:"right"}}/>
-    </Tooltip>
-
-    </Form.Item>
-	  </Card>
+          <div style={{ float: "right" }}>
+            <Facebook url="https://github.com/caspg/react-sharingbuttons/blob/master/www/components/SharingButtons.jsx#L15"/>
+            <Twitter />
+          </div>
+        </Form.Item>
+      </Card>
     </Col>
   </Row>
 );
