@@ -105,17 +105,14 @@ const ProductForm = (props) => {
 
    let name = subcr[0].fullName
 
-
     axios
       .post(
         'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/eventComments',{fullName:name,comment:comments},
       )
       .then(() => {
  
-   
       })
   }
-  
 
   return (
     <>
