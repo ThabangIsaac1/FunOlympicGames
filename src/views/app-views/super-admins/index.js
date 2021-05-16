@@ -604,7 +604,7 @@ const jointSessionData = () => {
           <DonutChartWidget 
             series={sessionData} 
             labels={sessionLabels} 
-            title="Subscribers By Gender"
+            title="Viewers By Gender"
             customOptions={{colors: sessionColor}}
             extra={
               <Row  justify="center">
