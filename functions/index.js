@@ -8,6 +8,7 @@ const https = require('https')
 const admin = require('firebase-admin')
 const nodemailer = require('nodemailer')
 const sgTransport = require('nodemailer-sendgrid-transport')
+const axios = require('axios')
 
 //const cron = require('node-cron');
 
@@ -44,63 +45,87 @@ app.use(bodyParser.json())
 
 /*Endpoint Register User*/
 app.post('/api/register', (req, res) => {
-  const { email, fullName, country } = req.body
+  const { email, fullName, country, gender } = req.body
   const message = `Thank you for registering to attend the Fun Olympic games!! You are one step away from joining the fantastic moment: Kindly follow this link.\n https://funolympic-fnqi.firebaseapp.com/auth/reset-password?mode=action&oobCode=code `
 
-  ;(async () => {
-    try {
-      auth
-        .createUser({
+  auth
+    .createUser({
+      email: email,
+      emailVerified: false,
+      password: '123456',
+      disabled: false,
+    })
+    .then(() => {
+      db.collection('subscribers')
+        .add({
           email: email,
-          emailVerified: false,
-          password: '123456',
-          //country: country,
-          //displayName: fullName,
-          disabled: false,
-          customClaims: { roleId: 1 },
+          fullName: fullName,
+          country: country,
+          gender: gender,
         })
         .then(() => {
-          // Save Country and Name
-          try {
-            db.collection('subscribers')
-              .add({
-                email: email,
-                fullName: fullName,
-                country: country,
+          // Update Claim
+          axios
+            .put(
+              `https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscriber-claim/${email}`,
+            )
+            .then(() => {
+              // Email send to:
+              transporter.sendMail({
+                to: email,
+                from: 'funolympic.fnqi@gmail.com',
+                subject: 'Registeration Credentials',
+                message: message,
+                html: `<div>
+                <h4>Dear Fun Olympic user,${fullName}</h4>   
+                <p>${message || ''}</p>
+                <span>
+                    Fun Olympic Games Management
+                </span>
+                </div>`,
               })
-              .then(() => {
-                // Email send to:
-                transporter.sendMail({
-                  to: email,
-                  from: 'funolympic.fnqi@gmail.com',
-                  subject: 'Registeration Credentials',
-                  message: message,
-                  html: `<div>
-                  <h4>Dear Fun Olympic user,${fullName}</h4>   
-                  <p>${message || ''}</p>
-                  <span>
-                      Fun Olympic Games Management
-                  </span>
-                  </div>`,
-                })
-                return res.status(202).json({ res: 'success' })
-              })
-          } catch (error) {
-            console.log(error)
-            return res.status(500).json({ res: 'fail' })
-          }
 
-          return res.status(202).json('email sent!')
+              return res.status(202).json({ res: 'success' })
+            })
+            .catch((error) => {
+              console.log(error)
+            })
         })
-    } catch (error) {
+        .catch((error) => {
+          console.log(error)
+          return res.status(500).json({ res: 'fail' })
+        })
+    })
+    .catch((error) => {
       console.log(error)
-      return res.status(500).send()
-    }
-  })()
+      return res.status(500).json({ res: 'fail' })
+    })
 })
 /*Endpoint Register User*/
 
-// Reib Admin Claim
+// Super Admin Claim
+app.put('/api/super-admin-claim/:email', (req, res) => {
+  ;(async () => {
+    let { email } = req.params
+
+    try {
+      const user = await auth.getUserByEmail(email)
+
+      auth
+        .setCustomUserClaims(user.uid, {
+          super: true,
+        })
+        .then(() => {
+          return res.status(200).send('Claim changed!')
+        })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
+
+// Olympic Admins Claim
 app.put('/api/olympic-admin-claim/:email', (req, res) => {
   ;(async () => {
     let { email } = req.params
@@ -122,7 +147,7 @@ app.put('/api/olympic-admin-claim/:email', (req, res) => {
   })()
 })
 // Olympic Admins Claim
-app.put('/api/olympic-claim/:email', (req, res) => {
+app.put('/api/subscriber-claim/:email', (req, res) => {
   ;(async () => {
     let { email } = req.params
 
@@ -131,7 +156,7 @@ app.put('/api/olympic-claim/:email', (req, res) => {
 
       auth
         .setCustomUserClaims(user.uid, {
-          super: true,
+          subscriber: true,
         })
         .then(() => {
           return res.status(200).send('Claim changed!')
@@ -168,7 +193,7 @@ app.post('/api/results', (req, res) => {
         silver: req.body.silver,
         bronze: req.body.bronze,
         codeName: req.body.codeName,
-            })
+      })
       return res.status(202).json({ res: 'success' })
     } catch (error) {
       console.log(error)
@@ -223,6 +248,29 @@ app.get('/api/events', (req, res) => {
   })()
 })
 
+// Getting all results
+app.get('/api/eventresults', (req, res) => {
+  ;(async () => {
+    try {
+      let query = db.collection('Results')
+      let response = []
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          const selectedItem = {
+            id: doc.id,
+            ...doc.data(),
+          }
+          response.push(selectedItem)
+        }
+      })
+      return res.status(200).send(response)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
 
 // Getting all subscribers
 app.get('/api/subscribers', (req, res) => {
@@ -271,6 +319,27 @@ app.get('/api/events/:id', (req, res) => {
   })()
 })
 
+/*Endpoint Send Message*/
+app.post('/api/send-message', (req, res) => {
+  const { email, fullName, message } = req.body
+  //const message = `Thank you for registering to attend the Fun Olympic games!! You are one step away from joining the fantastic moment: Kindly follow this link.\n https://funolympic-fnqi.firebaseapp.com/auth/reset-password?mode=action&oobCode=code `
+
+  // Email send to:
+  transporter.sendMail({
+    to: 'funolympic.fnqi@gmail.com',
+    from: 'funolympic.fnqi@gmail.com',
+    subject: `Enquiry from: ${fullName}`,
+    message: message,
+    html: `<div>
+    <h4>Dear admin,</h4>   
+    <p>${message || ''}</p>
+    <span>
+        Reply to: ${email}
+    </span>
+    </div>`,
+  })
+})
+/*Endpoint Send Message*/
 //updating a specific sporting code
 app.put('/api/update_code', (req, res) => {
   ;(async () => {
@@ -290,7 +359,7 @@ app.put('/api/update_code', (req, res) => {
             db.doc(`Events/${doc.id}`).update({
               codeName: codeName,
               category: category,
-              eventLocation: eventLocation
+              eventLocation: eventLocation,
             })
             response = {
               status: 'successs',
@@ -311,6 +380,41 @@ app.put('/api/update_code', (req, res) => {
   })()
 })
 
+//change status of  a specific sporting code
+app.put('/api/ended', (req, res) => {
+  ;(async () => {
+    console.log(req.body)
+    try {
+      let eventId = req.body.id
+      let status = req.body.codeName
+
+      let query = db.collection('Events')
+      let response
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          if (doc.id === eventId) {
+            db.doc(`Events/${doc.id}`).update({
+              status: 'Event Ended',
+            })
+            response = {
+              status: 'successs',
+            }
+            break
+          } else {
+            response = {
+              status: 'not successful',
+            }
+          }
+        }
+      })
+      return res.status(200).json({ response })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
 //Deleting a specific sporting code
 app.delete('/api/events/:id', (req, res) => {
   ;(async () => {
