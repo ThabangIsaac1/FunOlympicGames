@@ -301,17 +301,16 @@ const jointSessionData = () => {
 }
  const conbinedSessionData = jointSessionData()  
 
-
    const regionData = [
     {
       color: '#3e82f7',
       name:   'Botswana',
-      value: '37.61%'
+      value: '1%'
       },
       {
       color: '#04d182',
       name: 'Brazil',
-      value: '16.79%'
+      value: '19%'
       },
       {
       color: '#ffc542',

@@ -41,37 +41,52 @@ const ProductForm = (props) => {
 
   const { mode = ADD, param } = props
   const [events, setEvents] = useState({})
-  const [list, setList] = useState({})
+  const [list, setList] = useState([])
+  const [subscribers, setSubscribers] = useState([])
   const [comments, setComments] = useState({
-    comment:'',fullname:'heie'
+    comment:'',
   })
 
   useEffect(() => {
-
+    axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscribers
+    `).
+      then((res) => {
+        console.log(res.data)
+        setSubscribers(res.data)
+    //  console.log(res.data)
+        
+      })
 
     if (mode === EDIT) {
 
       const { id } = param
-
+      // axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscribers
+      // `).
+      //   then((res) => {
+      //     console.log(res.data)
+      //     setSubscribers(res.data)
+      // //  console.log(res.data)
+          
+      //   })
 
       axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events/${id}
       `).
         then((res) => {
-          console.log(res.data)
+      //    console.log(res.data)
           setEvents(res.data.virtualLink)
-          //   setEvents(res.data.)
+        
           
         }).then(()=>{
-          axios
-          .get(
-            'http://localhost:5000/funolympic-fnqi/us-central1/app/api/eventComments',
+          // axios
+          // .get(
+          //   'http://localhost:5000/funolympic-fnqi/us-central1/app/api/eventComments',
             
-          )
-          .then((res) => {
+          // )
+          // .then((res) => {
     
-            setList(res.data[0].comment)
-            console.log(res.data[0].comment)
-          })
+          //   setList(res.data[0])
+          //   console.log(res.data[0].comment)
+          // })
         })
     }
   }, [])
@@ -81,15 +96,23 @@ const ProductForm = (props) => {
     setComments({ ...comments, [e.target.name]: e.target.value })
   }
 
+
   const submit = () => {
+   let email = auth.currentUser.email 
+   let subcr = subscribers.filter((e)=>{
+     return e.email === email
+   })
+
+   let name = subcr[0].fullName
+
+
     axios
       .post(
-        'http://localhost:5000/funolympic-fnqi/us-central1/app/api/eventComments',
-        comments,
+        'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/eventComments',{fullName:name,comment:comments},
       )
-      .then((res) => {
-      setComments({comment:''})
-      
+      .then(() => {
+ 
+   
       })
   }
   

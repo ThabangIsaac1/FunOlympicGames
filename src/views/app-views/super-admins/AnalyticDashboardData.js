@@ -4,32 +4,32 @@ export const regionData = [
 	{
 		color: '#3e82f7',
 		name: 'United States of America',
-		value: '37.61%'
+		value: '0%'
   	},
   	{
 		color: '#04d182',
 		name: 'Brazil',
-		value: '16.79%'
+		value: '1%'
   	},
  	 {
 		color: '#ffc542',
 		name: 'India',
-		value: '12.42%'
+		value: '1%'
  	},
   	{
 		color: '#fa8c16',
 		name: 'China',
-		value: '9.85%'
+		value: '9%'
 	},
 	{
 		color: '#ff6b72',
 		name: 'Malaysia',
-		value: '7.68%'
+		value: '8%'
 	},
 	{
 		color: '#a461d8',
 		name: 'Thailand',
-		value: '5.11%'
+		value: '51%'
 	}
 ]
 

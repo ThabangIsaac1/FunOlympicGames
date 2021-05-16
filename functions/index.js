@@ -434,7 +434,7 @@ app.post('/api/eventComments', (req, res) => {
   ;(async () => {
     try {
       db.collection('Comments').add({
-        // fullname: req.body.fullName,
+        fullName: req.body.fullName,
         comment: req.body.comment,
      //   eventDescription: req.body.eventDescription,
     //    status: 'Upcoming',
