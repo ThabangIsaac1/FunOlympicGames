@@ -64,7 +64,7 @@ const Orders = () => {
 
 	const viewEvent = (row) => {
 	
-		 history.push(`./view_game/${row.id}`) 
+		 history.push(`./watch/${row.id}`) 
 	  }
 
 	  

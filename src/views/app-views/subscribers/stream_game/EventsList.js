@@ -85,12 +85,12 @@ const ProductList = () => {
           <span className="ml-2">Watch</span>
         </Flex>
       </Menu.Item>
-      <Menu.Item onClick={() => deleteRow(row)}>
+      {/* <Menu.Item onClick={() => deleteRow(row)}>
         <Flex alignItems="center">
           <DeleteOutlined />
           Add  Remark
         </Flex>
-      </Menu.Item>
+      </Menu.Item> */}
     </Menu>
   )
 

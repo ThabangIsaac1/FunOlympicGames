@@ -330,7 +330,7 @@ app.post('/api/eventComments', (req, res) => {
   ;(async () => {
     try {
       db.collection('Comments').add({
-        fullname: req.body.fullName,
+        // fullname: req.body.fullName,
         comment: req.body.comment,
      //   eventDescription: req.body.eventDescription,
     //    status: 'Upcoming',
@@ -339,6 +339,29 @@ app.post('/api/eventComments', (req, res) => {
     } catch (error) {
       console.log(error)
       return res.status(500).json({ res: 'fail' })
+    }
+  })()
+})
+
+app.get('/api/eventComments', (req, res) => {
+  ;(async () => {
+    try {
+      let query = db.collection('Comments')
+      let response = []
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          const selectedItem = {
+            id: doc.id,
+            ...doc.data(),
+          }
+          response.push(selectedItem)
+        }
+      })
+      return res.status(200).send(response)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send(error)
     }
   })()
 })
