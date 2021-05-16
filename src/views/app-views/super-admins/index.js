@@ -29,6 +29,8 @@ import {
 import moment from 'moment'; 
 import { DATE_FORMAT_DD_MM_YYYY } from 'constants/DateConstant'
 import { WindowScroller } from 'react-virtualized';
+import { COLORS } from 'constants/ChartConstant';
+
 
 
 const rederRegionTopEntrance = (
@@ -46,6 +48,8 @@ export const AnalyticDashboard = () => {
   const [subscribers, setSubscribers] = useState([])
   const [hasError, setErrors] = useState(false)
   const [eventsData, setEvents] = useState([])
+  const [male, setMale] = useState([])
+  const [female, setFemale] = useState([])
   const [eventsResults, setResults] = useState([])
   const [list, setList] = useState([])
   const [selectedRows, setSelectedRows] = useState([])
@@ -77,6 +81,9 @@ export const AnalyticDashboard = () => {
         setErrors(error)
       })
 
+
+     
+
     fetch(
       'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscribers',
     )
@@ -91,12 +98,54 @@ export const AnalyticDashboard = () => {
         //console.log(subscribers);
 
         setSubscribers(subscribers)
+       
       })
       .catch((error) => {
         setErrors(error)
       })
 
 
+      fetch(
+        'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscribers',
+      )
+        .then((response) => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            throw Error('Error fetching data.')
+          }
+        })
+        .then((male) => {
+          let filteredMale = male.filter(function (e) {
+            return e.gender === 'M' 
+          })
+  
+          setMale(filteredMale)
+        })
+        .catch((error) => {
+          setErrors(error)
+        })
+
+        fetch(
+          'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscribers',
+        )
+          .then((response) => {
+            if (response.ok) {
+              return response.json()
+            } else {
+              throw Error('Error fetching data.')
+            }
+          })
+          .then((female) => {
+            let filteredFemale = female.filter(function (e) {
+              return e.gender === 'F' 
+            })
+    
+            setFemale(filteredFemale)
+          })
+          .catch((error) => {
+            setErrors(error)
+          })
      
       fetch(
         'https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events',
@@ -233,7 +282,25 @@ export const AnalyticDashboard = () => {
 
 	];
 
-    
+ const sessionColor = [COLORS[3], COLORS[0]]
+ const sessionData = [female.length, male.length]
+ const sessionLabels = ["Female", "Male"]
+const jointSessionData = () => {
+	let arr = []
+	for (let i = 0; i < sessionData.length; i++) {
+		const data = sessionData[i];
+		const label = sessionLabels[i];
+		const color = sessionColor[i]
+		arr = [...arr, {
+			data: data,
+			label: label,
+			color: color
+		}]
+	}
+	return arr
+}
+ const conbinedSessionData = jointSessionData()  
+
 
    const regionData = [
     {

@@ -35,7 +35,7 @@ export const SideNav = ({
 
   useEffect(() => {
     fetch(
-      `http://localhost:5000/funolympic-fnqi/us-central1/app/api/retrieve-claim/${currentUser.email}`,
+      `https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/retrieve-claim/${currentUser.email}`,
     )
       .then((response) => {
         if (response.ok) {
