@@ -104,6 +104,7 @@ const ProductForm = (props) => {
   };
 
   const submit = () => {
+    setComments({comment:''})
     const { id } = param;
     let email = auth.currentUser.email;
     let subcr = subscribers.filter((e) => {
@@ -115,10 +116,12 @@ const ProductForm = (props) => {
     axios
       .post(
         "https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/eventComments",
-        { fullName: name, comment, id }
+        { fullName: name,comment, id }
       )
       .then(() => {
         message.success("Comment Shared");
+        //this shows comment to the comments after commenting
+        setfetchComments([...fetchComments,  { fullName: name, comment, id }])
       });
   };
   const url = `https://youtu.be/${events}`

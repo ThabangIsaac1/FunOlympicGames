@@ -76,10 +76,6 @@ const GeneralField = (props) => {
     ]
   };
 
-
-
-
-
   const [data, setData] = useState({
     codeName: '',
     category: '',
@@ -94,14 +90,14 @@ const GeneralField = (props) => {
     setData({ ...data, [e.target.name]: e.target.value });
     console.log(data)
   };
-  
+
   const Submit = () => {
-  
-   
-   
-      axios.post(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`, data,).then(() => {
-        message.success('Event has been successfully added')
-        
+
+
+
+    axios.post(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`, data,)
+      .then(() => {
+
         setData({
           codeName: '',
           category: '',
@@ -112,8 +108,12 @@ const GeneralField = (props) => {
           eventDescription: ''
         })
       })
-  
-    
+      .then(() => {
+        message.success('Event has been successfully added')
+      })
+
+
+
   }
 
   return (

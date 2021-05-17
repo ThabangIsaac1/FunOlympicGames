@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { Card, Table, Select, Input, Button, Badge, Menu, Modal,Form, message } from 'antd';
+import { Card, Table, Select, Input, Button, Badge, Menu, Modal, Form, message } from 'antd';
 import OrderListData from "assets/data/order-list.data.json"
 import { EyeOutlined, FileExcelOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
@@ -30,9 +30,9 @@ const getPaymentStatus = status => {
 }
 
 const layout = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 16 },
-  };
+	labelCol: { span: 5 },
+	wrapperCol: { span: 16 },
+};
 const getShippingStatus = status => {
 	if (status === 'Ready') {
 		return 'blue'
@@ -59,22 +59,22 @@ const Orders = () => {
 		gold: "",
 		silver: "",
 		bronze: "",
-		  })
+	})
 
-		  const viewEvent = (row) => {
-			history.push(`./watch/${row.id}`)
-		  }
+	const viewEvent = (row) => {
+		history.push(`./watch/${row.id}`)
+	}
 
-	  
+
 	const AddResults = (row) => {
-		
+
 		setModal1Visible(true);
 		results.id = row.id;
 		results.codeName = row.codeName;
-		
-		
 
-	 }
+
+
+	}
 
 	const handleShowStatus = value => {
 		if (value !== 'All') {
@@ -89,35 +89,35 @@ const Orders = () => {
 
 
 		axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`).
-		then((res) => {
-			// console.log(res.data)
-			setList(res.data)
-			setEvents(res.data)
-		})
+			then((res) => {
+				// console.log(res.data)
+				setList(res.data)
+				setEvents(res.data)
+			})
 
 
 	}, [])
 	const dropdownMenu = row => (
 		<Menu>
-			<Menu.Item>
+			<Menu.Item onClick={() => viewEvent(row)}>
 				<Flex alignItems="center">
-					<EyeOutlined onClick={() => viewEvent(row)} />
+					<EyeOutlined />
 					<span className="ml-2">Watch</span>
 				</Flex>
 			</Menu.Item>
-			<Menu.Item>
+			<Menu.Item onClick={() => AddResults(row)} >
 				<Flex alignItems="center">
-					<PlusCircleOutlined  onClick={() => AddResults(row)} />
+					<PlusCircleOutlined />
 					<span className="ml-2">Add Results</span>
 				</Flex>
 			</Menu.Item>
 		</Menu>
 	);
-// render: (_, record) => (
-// 				<div className="d-flex">
-// 					{/* <AvatarStatus size={30} src={record.image} name={record.name}/> */}
-// 				</div>
-// 			),
+	// render: (_, record) => (
+	// 				<div className="d-flex">
+	// 					{/* <AvatarStatus size={30} src={record.image} name={record.name}/> */}
+	// 				</div>
+	// 			),
 	const tableColumns = [
 		{
 			title: 'Event',
@@ -137,14 +137,14 @@ const Orders = () => {
 		{
 			title: 'Location',
 			dataIndex: 'eventLocation',
-			
+
 			// sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
 		},
 
 		{
 			title: 'Countries Participating',
 			dataIndex: 'countriesParticipating',
-			
+
 			// sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
 		},
 		{
@@ -155,7 +155,7 @@ const Orders = () => {
 			// ),
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'paymentStatus')
 		},
-		
+
 		{
 			title: '',
 			dataIndex: 'actions',
@@ -171,12 +171,12 @@ const Orders = () => {
 	const validateMessages = {
 		required: 'This field is required!',
 		types: {
-		  gold: 'Please specify country!',
-		  silver: 'Please specify country!',
-		  bronze: 'Please specify country!',
-		}	
-	
-	  };
+			gold: 'Please specify country!',
+			silver: 'Please specify country!',
+			bronze: 'Please specify country!',
+		}
+
+	};
 
 
 	const rowSelection = {
@@ -195,7 +195,7 @@ const Orders = () => {
 	}
 	const handle = (e) => {
 		setResults({ ...results, [e.target.name]: e.target.value })
-	  }
+	}
 
 	const submitResults = () => {
 		setModal1Visible(false)
@@ -205,18 +205,18 @@ const Orders = () => {
 
 		{
 			axios
-			  .put(
-				`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/ended/`,results,
-			  )
-			  .then(() => {
-				//message.success(` Delete successful`)
-				
-	
-				
-			  })
-		  }
+				.put(
+					`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/ended/`, results,
+				)
+				.then(() => {
+					//message.success(` Delete successful`)
 
-	  }
+
+
+				})
+		}
+
+	}
 	// useEffect()=
 	return (
 		<Card>
@@ -225,7 +225,7 @@ const Orders = () => {
 					<div className="mr-md-3 mb-3">
 						<Input placeholder="Search" prefix={<SearchOutlined />} onChange={e => onSearch(e)} />
 					</div>
-					
+
 				</Flex>
 
 			</Flex>
@@ -243,34 +243,34 @@ const Orders = () => {
 				/>
 			</div>
 			<Modal
-            title="Publish Results"
-            style={{ top: 20 }}
-            visible={modal1Visible}
-            onOk={submitResults}
-            onCancel={() => setModal1Visible(false)}
-          >
+				title="Publish Results"
+				style={{ top: 20 }}
+				visible={modal1Visible}
+				onOk={submitResults}
+				onCancel={() => setModal1Visible(false)}
+			>
 
-            <Form
-              {...layout} name="nest-messages"
-              onFinish={null}
-              validateMessages={validateMessages}>
+				<Form
+					{...layout} name="nest-messages"
+					onFinish={null}
+					validateMessages={validateMessages}>
 
-				<Form.Item label="Sporting Code" >
-                <Input type="codeName" name="codeName" value={results.codeName}   readOnly/>
-              </Form.Item>			
+					<Form.Item label="Sporting Code" >
+						<Input type="codeName" name="codeName" value={results.codeName} readOnly />
+					</Form.Item>
 
-              <Form.Item label="Gold Medal" rules={[{ required: true }]}>
-                <Input type="gold" name="gold" value={results.gold} onChange={handle} placeholder="Country 01" style={{backgroundColor:"gold",color:"white"}}/>
-              </Form.Item>
+					<Form.Item label="Gold Medal" rules={[{ required: true }]}>
+						<Input type="gold" name="gold" value={results.gold} onChange={handle} placeholder="Country 01" style={{ backgroundColor: "gold", color: "white" }} />
+					</Form.Item>
 
-			  <Form.Item label="Silver Medal" rules={[{ required: true }]}>
-                <Input type="silver" name="silver" value={results.silver} onChange={handle} placeholder="Country 02"  style={{backgroundColor:"silver",color:"white"}}/>
-              </Form.Item>
-			  <Form.Item label="Bronze Medal" rules={[{ required: true }]}>
-                <Input type="bronze" name="bronze" value={results.bronze} onChange={handle} placeholder="Country 03" style={{backgroundColor:"#cd7f32",color:"white"}}/>
-              </Form.Item>
-            </Form>
-          </Modal>
+					<Form.Item label="Silver Medal" rules={[{ required: true }]}>
+						<Input type="silver" name="silver" value={results.silver} onChange={handle} placeholder="Country 02" style={{ backgroundColor: "silver", color: "white" }} />
+					</Form.Item>
+					<Form.Item label="Bronze Medal" rules={[{ required: true }]}>
+						<Input type="bronze" name="bronze" value={results.bronze} onChange={handle} placeholder="Country 03" style={{ backgroundColor: "#cd7f32", color: "white" }} />
+					</Form.Item>
+				</Form>
+			</Modal>
 		</Card>
 	)
 }
