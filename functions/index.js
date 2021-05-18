@@ -343,22 +343,20 @@ app.post('/api/send-message', (req, res) => {
 
 
 /*Forort Password Send Message*/
-app.post('/api/send-message', (req, res) => {
-  const { email } = req.body
-  const message = `Kindly follow this link to reset your password.\n https://funolympic-fnqi.web.app/auth/reset-password?mode=action&oobCode=code `
+app.post('/api/send-reset', (req, res) => {
+  const { email }= req.body
+  const messages = `Kindly follow this link to reset your password.\n https://funolympic-fnqi.web.app/auth/reset-password?mode=action&oobCode=code `
 
   // Email send to:
   transporter.sendMail({
-    to: 'funolympic.fnqi@gmail.com',
+    to: `${email}`,
     from: 'funolympic.fnqi@gmail.com',
-    subject: `Request from: ${email}`,
-    message: message,
+    subject: `Password Reset For: ${email}`,
+    message: messages,
     html: `<div>
-    <h4>Dear admin,</h4>   
-    <p>${message || ''}</p>
-    <span>
-        Reply to: ${email}
-    </span>
+    <h4>Dear FunOlympics User,</h4>   
+    <p>${messages || ''}</p>
+   
     </div>`,
   })
 })
