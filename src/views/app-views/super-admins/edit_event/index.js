@@ -65,6 +65,10 @@ const Orders = () => {
 		history.push(`./watch/${row.id}`)
 	}
 
+	const viewDetails = (row) => {
+		history.push(`./edit_details/${row.id}`)
+	}
+
 
 	const AddResults = (row) => {
 
@@ -137,7 +141,7 @@ const Orders = () => {
 					<span className="ml-2">Add Results</span>
 				</Flex>
 			</Menu.Item>
-			<Menu.Item onClick={() => editEvent(row)} >
+			<Menu.Item onClick={() => viewDetails(row)} >
 				<Flex alignItems="center">
 					<EditOutlined />
 					<span className="ml-2">Edit Event</span>

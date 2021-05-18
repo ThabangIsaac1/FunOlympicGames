@@ -272,6 +272,52 @@ app.get('/api/eventresults', (req, res) => {
   })()
 })
 
+
+app.put('/api/eventUpdate/:id', (req, res) => {
+  ;(async () => {
+ 
+    try {
+      let id = req.params.id
+      let  dateScheduled = req.body. dateScheduled
+      let eventLocation = req.body.eventLocation
+      let countriesParticipating = req.body.countriesParticipating
+      let eventDescription = req.body.eventDescription
+
+      let query = db.collection('Events')
+      let response
+      await query.get().then((querySnapshot) => {
+        let docs = querySnapshot.docs
+        for (let doc of docs) {
+          if (doc.id === id) {
+            db.doc(`Events/${doc.id}`).update({
+              dateScheduled: dateScheduled,
+             eventLocation:eventLocation,
+             eventDescription:eventDescription,
+             countriesParticipating:countriesParticipating,
+             
+            })
+            response = {
+              status: 'successs',
+            }
+            break
+          } else {
+            response = {
+              status: 'not successful',
+            }
+          }
+        }
+      })
+      return res.status(200).json({ response })
+    } catch (error) {
+      // console.log(error)
+      return res.status(500).send(error)
+    }
+  })()
+})
+
+
+
+
 // Getting all subscribers
 app.get('/api/subscribers', (req, res) => {
   ;(async () => {
@@ -335,6 +381,7 @@ app.post('/api/send-message', (req, res) => {
     <p>${message || ''}</p>
     <span>
         Reply to: ${email}
+
     </span>
     </div>`,
   })

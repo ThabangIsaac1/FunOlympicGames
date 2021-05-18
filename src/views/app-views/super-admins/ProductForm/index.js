@@ -83,14 +83,14 @@ const ProductForm = (props) => {
 
   const onFinish = () => {
     if (
-      data.codeName === '' ||
-      data.category === '' ||
+    
+      data.eventLocation === '' ||
+      data.dateSecheduled === '' ||
+      data.countriesParticipating === '' ||
       data.eventLocation === '' 
     
     ) {
-      console.log(
-        `${data.codeName} ${data.category} ${data.eventLocation}`,
-      )
+  
       message.warning(`Please fill in all fields!`)
       return
     }
@@ -105,13 +105,18 @@ const ProductForm = (props) => {
           const { id } = param
           axios
           .put(
-              `https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/update_code`,data
+              `https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/eventUpdate/${id}`,data
             
             )
             .then(() => {
               setSubmitLoading(false)
               message.success(`Sporting Code Details successfully Edited`)
-           //   window.location.reload()
+              setData({
+                dateScheduled: '',
+                eventLocation: '',
+                eventDescription: '',
+                countriesParticipating:'',
+              })
             })
 
         }
@@ -157,9 +162,11 @@ const ProductForm = (props) => {
   }
 
   const [data, setData] = useState({
-    codeName: '',
-    category: '',
-    eventLocation: ''
+    dateScheduled: '',
+    eventLocation: '',
+    eventDescription: '',
+    countriesParticipating:'',
+
   })
 
   const handle = (e) => {
@@ -208,9 +215,9 @@ const ProductForm = (props) => {
                 {mode === 'ADD' ? 'ADD JOB LISTING' : `Edit  Sporting Code`}{' '}
               </h2>
               <div className="mb-3">
-                <Button onClick={discard} className="mr-2">
+                {/* <Button onClick={discard} className="mr-2">
                   Discard
-                </Button>
+                </Button> */}
                 <Button
                   type="primary"
                   onClick={() => onFinish()}
@@ -231,25 +238,13 @@ const ProductForm = (props) => {
                   <Card title="">
                     <Row gutter={16}>
                       <Col xs={24} sm={24} md={12}>
-                        <Form.Item label="Sporting code name">
+                        <Form.Item label="Date">
                           <Input
-                            name="codeName"
-                            placeholder="Enter Sporting code name"
+                          type="date"
+                            name="dateScheduled"
+                            placeholder="Enter Sporting date"
                             onChange={handle}
-                            value={data.codeName}
-                            className="w-100"
-                          />
-                        </Form.Item>
-                      </Col>
-
-                      <Col xs={24} sm={24} md={12}>
-                        <Form.Item label="Category">
-                          <Input
-                            type="text"
-                            name="category"
-                            placeholder="Enter Category"
-                            onChange={handle}
-                            value={data.category}
+                            value={data.dateScheduled}
                             className="w-100"
                           />
                         </Form.Item>
@@ -260,9 +255,36 @@ const ProductForm = (props) => {
                           <Input
                             type="text"
                             name="eventLocation"
-                            placeholder="Enter Event location"
+                            placeholder="Enter Location"
                             onChange={handle}
                             value={data.eventLocation}
+                            className="w-100"
+                          />
+                        </Form.Item>
+                      </Col>
+
+                      <Col xs={24} sm={24} md={12}>
+                        <Form.Item label="Countries Participating">
+                          <Input
+                            type="text"
+                            name="countriesParticipating"
+                            placeholder="Enter countries participating"
+                            onChange={handle}
+                            value={data.countriesParticipating}
+                            className="w-100"
+                          />
+                        </Form.Item>
+                      </Col>
+
+                      
+                      <Col xs={24} sm={24} md={12}>
+                        <Form.Item label="Event Description">
+                          <Input
+                            type="text"
+                            name="eventDescription"
+                            placeholder="Enter Event location"
+                            onChange={handle}
+                            value={data.eventDescription}
                             className="w-100"
                           />
                         </Form.Item>
