@@ -102,6 +102,7 @@ const subscriberNavTree = [
         breadcrumb: false,
         submenu: [],
       },
+      
     ],
   },
 ]

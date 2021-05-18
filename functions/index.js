@@ -46,7 +46,7 @@ app.use(bodyParser.json())
 /*Endpoint Register User*/
 app.post('/api/register', (req, res) => {
   const { email, fullName, country, gender } = req.body
-  const message = `Thank you for registering to attend the Fun Olympic games!! You are one step away from joining the fantastic moment: Kindly follow this link.\n https://funolympic-fnqi.firebaseapp.com/auth/reset-password?mode=action&oobCode=code `
+  const message = `Thank you for registering to attend the Fun Olympic games!! You are one step away from joining the fantastic moment: Kindly follow this link.\n https://funolympic-fnqi.web.app/auth/reset-password?mode=action&oobCode=code `
 
   auth
     .createUser({
@@ -340,6 +340,30 @@ app.post('/api/send-message', (req, res) => {
   })
 })
 /*Endpoint Send Message*/
+
+
+/*Forort Password Send Message*/
+app.post('/api/send-message', (req, res) => {
+  const { email } = req.body
+  const message = `Kindly follow this link to reset your password.\n https://funolympic-fnqi.web.app/auth/reset-password?mode=action&oobCode=code `
+
+  // Email send to:
+  transporter.sendMail({
+    to: 'funolympic.fnqi@gmail.com',
+    from: 'funolympic.fnqi@gmail.com',
+    subject: `Request from: ${email}`,
+    message: message,
+    html: `<div>
+    <h4>Dear admin,</h4>   
+    <p>${message || ''}</p>
+    <span>
+        Reply to: ${email}
+    </span>
+    </div>`,
+  })
+})
+/*Forort Password Send Message*/
+
 //updating a specific sporting code
 app.put('/api/update_code', (req, res) => {
   ;(async () => {

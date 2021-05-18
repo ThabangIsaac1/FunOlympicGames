@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Table, Select, Input, Button, Badge, Menu, Modal, Form, message } from 'antd';
 import OrderListData from "assets/data/order-list.data.json"
-import { EyeOutlined, FileExcelOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { EyeOutlined, EditOutlined, SearchOutlined, PlusCircleOutlined,DeleteOutlined } from '@ant-design/icons';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import { useHistory } from 'react-router-dom'
 import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
@@ -74,6 +74,32 @@ const Orders = () => {
 
 
 
+	
+	}
+
+
+	
+
+	const deleteEvent = (row) => {
+
+
+		axios
+		.delete(
+		  `https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events/${row.id}`
+		)
+		.then(() => {
+		  message.success(` Event Removed successfuly`);
+		  //window.location.reload()
+
+		  
+		});
+
+
+	}
+	const editEvent = (row) => {
+
+
+
 	}
 
 	const handleShowStatus = value => {
@@ -109,6 +135,18 @@ const Orders = () => {
 				<Flex alignItems="center">
 					<PlusCircleOutlined />
 					<span className="ml-2">Add Results</span>
+				</Flex>
+			</Menu.Item>
+			<Menu.Item onClick={() => editEvent(row)} >
+				<Flex alignItems="center">
+					<EditOutlined />
+					<span className="ml-2">Edit Event</span>
+				</Flex>
+			</Menu.Item>
+			<Menu.Item onClick={() => deleteEvent(row)} >
+				<Flex alignItems="center">
+					<DeleteOutlined />
+					<span className="ml-2">Delete Event</span>
 				</Flex>
 			</Menu.Item>
 		</Menu>

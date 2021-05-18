@@ -36,6 +36,7 @@ export const AppViews = () => {
           component={lazy(() => import(`./super-admins/edit_details`))}
         />
         <Route path={`${APP_PREFIX_PATH}/stream-event`} component={lazy(() => import(`./subscribers/stream_game`))} />
+        <Route path={`${APP_PREFIX_PATH}/reset-password`} component={lazy(() => import(`../auth-views/authentication/reset-password`))} />
 
 
         <Route path={`${APP_PREFIX_PATH}/watch/:id`} component={lazy(() => import(`./subscribers/stream_game/watch`))} />
