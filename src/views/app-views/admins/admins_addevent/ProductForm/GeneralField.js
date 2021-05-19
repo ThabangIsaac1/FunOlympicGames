@@ -7,12 +7,13 @@ import {
   Form,
   Select, Button, message
 } from "antd";
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { set } from "lodash";
 
 
 const GeneralField = (props) => {
-
+  let history = useHistory();
 
   const { Option } = Select;
 
@@ -94,24 +95,33 @@ const GeneralField = (props) => {
   const Submit = () => {
 
 
-
+    if( 
+      data.codeName === '' ||
+      data.category === '' ||
+      data.eventLocation === ''||
+      data.dateScheduled === ''||
+      data.countriesParticipating === ''||
+      data.virtualLink === ''||
+      data.eventDescription === ''
+    )
+    {
+     return message.warning('Please fill in all the fields')
+    }
+else{
     axios.post(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/events`, data,)
       .then(() => {
-
+        message.success('Event has been successfully added')
         setData({
-          codeName: '',
+          codeName:'',
           category: '',
           eventLocation: '',
           dateScheduled: '',
           countriesParticipating: '',
           virtualLink: '',
-          eventDescription: ''
+          eventDescription: '',
         })
       })
-      .then(() => {
-        message.success('Event has been successfully added')
-      })
-
+    }
 
 
   }

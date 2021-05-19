@@ -41,16 +41,9 @@ import moment from "moment";
 import { DATE_FORMAT_DD_MM_YYYY } from "constants/DateConstant";
 import { WindowScroller } from "react-virtualized";
 import { COLORS } from "constants/ChartConstant";
+import { indexOf, result } from "lodash";
 
-const rederRegionTopEntrance = (
-  <div className="mb-4">
-    <div className="d-flex align-items-center">
-      <Avatar size={20} src="/img/flags/us.png" />
-      <h2 className="mb-0 ml-2 font-weight-bold">37.61%</h2>
-    </div>
-    <span className="text-muted">Top entrance region</span>
-  </div>
-);
+
 
 export const AnalyticDashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,14 +54,37 @@ export const AnalyticDashboard = () => {
   const [female, setFemale] = useState([]);
   const [eventsResults, setResults] = useState([]);
   const [list, setList] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   let history = useHistory();
   const { confirm } = Modal;
 
+
+  const rederRegionTopEntrance = (
+    <div className="mb-4">
+      <div className="d-flex align-items-center">
+        {/* <Avatar size={20} src="/img/flags/us.png" /> */}
+        <h2 className="mb-0 ml-2 font-weight-bold">{countries.length}%</h2>
+      </div>
+      <span className="text-muted">Top entrance region</span>
+    </div>
+  );
+
+
+
   useEffect(() => {
     // console.log()
     setIsLoading(true);
+
+    axios.get(`https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/subscribers`)
+    .then((res)=>{
+      let dat =res.data
+      let  country =dat.map((e)=>{
+         return e.country;
+       })
+      setCountries(country)
+    })
 
     fetch(
       "https://us-central1-funolympic-fnqi.cloudfunctions.net/app/api/eventresults"
@@ -142,8 +158,7 @@ export const AnalyticDashboard = () => {
       .then((female) => {
         let filteredFemale = female.filter(function (e) {
           return e.gender === "F";
-        });
-
+        });  
         setFemale(filteredFemale);
       })
       .catch((error) => {
@@ -224,7 +239,7 @@ export const AnalyticDashboard = () => {
       </Menu.Item>
     </Menu>
   );
-
+ 
   const cardDropdown = (menu) => (
     <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
       <a
@@ -242,7 +257,6 @@ export const AnalyticDashboard = () => {
       setSelectedRowKeys(key);
     },
   };
-
   const onSearch = (e) => {
     const value = e.currentTarget.value;
     const searchArray = e.currentTarget.value ? eventsData : eventsData;
@@ -307,35 +321,37 @@ export const AnalyticDashboard = () => {
   };
   const conbinedSessionData = jointSessionData();
 
+
   const regionData = [
     {
+      
       color: "#3e82f7",
-      name: "Botswana",
+      name: `${countries[0]}`
      
     },
     {
       color: "#04d182",
-      name: "Brazil",
+      name: `${countries[1]}`,
       
     },
     {
       color: "#ffc542",
-      name: "India",
+      name:  `${countries[2]}`,
     
     },
     {
       color: "#fa8c16",
-      name: "China",
+      name: `${countries[3]}`,
   
     },
     {
       color: "#ff6b72",
-      name: "Malaysia",
+      name: `${countries[4]}`,
     
     },
     {
       color: "#a461d8",
-      name: "South Africa",
+      name: `${countries[5]}`,
      
     },
   ];
@@ -601,6 +617,11 @@ export const AnalyticDashboard = () => {
 
   return (
     <>
+{/* 
+    <button onClick ={()=>{
+      console.log(countries)
+    }}
+    >testing button</button> */}
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={24} xxl={18}>
           <RegiondataWidget
